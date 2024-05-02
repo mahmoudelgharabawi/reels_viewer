@@ -48,7 +48,8 @@ class _ReelsPageState extends State<ReelsPage> {
   }
 
   Future initializePlayer() async {
-    _videoPlayerController = VideoPlayerController.network(widget.item.url);
+    _videoPlayerController =
+        VideoPlayerController.networkUrl(Uri.parse(widget.item.url));
     await Future.wait([_videoPlayerController.initialize()]);
     _chewieController = ChewieController(
       videoPlayerController: _videoPlayerController,
@@ -106,9 +107,9 @@ class _ReelsPageState extends State<ReelsPage> {
                   ),
                 ),
               )
-            : Column(
+            : const Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
+                children: [
                   CircularProgressIndicator(),
                   SizedBox(height: 10),
                   Text('Loading...')

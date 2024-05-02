@@ -101,7 +101,7 @@ class _MyHomePageState extends State<MyHomePage> {
       onClickBackArrow: () {
         log('======> Clicked on back arrow <======');
       },
-      onIndexChanged: (index){
+      onIndexChanged: (index) {
         log('======> Current Index ======> $index <========');
       },
       showProgressIndicator: true,
