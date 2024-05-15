@@ -1,9 +1,14 @@
+import 'package:cached_memory_image/cached_memory_image.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:chewie/chewie.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:reels_viewer/src/models/reel_model.dart';
+import 'package:reels_viewer/src/utils/convert_numbers_to_short.dart';
 import 'package:reels_viewer/src/utils/url_checker.dart';
 import 'package:video_player/video_player.dart';
+import 'package:video_thumbnail/video_thumbnail.dart';
 import 'components/like_icon.dart';
 import 'components/screen_options.dart';
 
@@ -35,8 +40,11 @@ class ReelsPage extends StatefulWidget {
 }
 
 class _ReelsPageState extends State<ReelsPage> {
-  late VideoPlayerController _videoPlayerController;
+  VideoPlayerController? _videoPlayerController;
   ChewieController? _chewieController;
+  DefaultCacheManager? _cacheManager;
+  Uint8List? imageUint8list;
+
   bool _liked = false;
   @override
   void initState() {
@@ -48,30 +56,57 @@ class _ReelsPageState extends State<ReelsPage> {
   }
 
   Future initializePlayer() async {
-    _videoPlayerController =
-        VideoPlayerController.networkUrl(Uri.parse(widget.item.url));
-    await Future.wait([_videoPlayerController.initialize()]);
-    _chewieController = ChewieController(
-      videoPlayerController: _videoPlayerController,
-      autoPlay: true,
-      showControls: false,
-      looping: false,
-    );
-    setState(() {});
-    _videoPlayerController.addListener(() {
-      if (_videoPlayerController.value.position ==
-          _videoPlayerController.value.duration) {
-        widget.swiperController.next();
-      }
-    });
+    _cacheManager ??= DefaultCacheManager();
+    // await _cacheManager!.emptyCache();
+
+    var videoFile = await _cacheManager!.getFileFromCache(widget.item.url);
+    imageUint8list = null;
+
+    if (videoFile == null) {
+      print('file not found in cache');
+
+      _cacheManager!.downloadFile(widget.item.url);
+      _videoPlayerController =
+          VideoPlayerController.networkUrl(Uri.parse(widget.item.url));
+      imageUint8list = await VideoThumbnail.thumbnailData(
+        video: widget.item.url,
+        quality: 25,
+      );
+      testValue = imageUint8list;
+
+      print('image uintList : $imageUint8list');
+    } else {
+      print('file  founded in cache');
+      _videoPlayerController = VideoPlayerController.file(videoFile.file);
+    }
+
+    if (_videoPlayerController != null) {
+      await Future.wait([_videoPlayerController!.initialize()]);
+      _chewieController = ChewieController(
+        videoPlayerController: _videoPlayerController!,
+        autoPlay: true,
+        showControls: false,
+        looping: false,
+      );
+      setState(() {});
+      _videoPlayerController!.addListener(() {
+        if (_videoPlayerController!.value.position ==
+            _videoPlayerController!.value.duration) {
+          widget.swiperController.next();
+        }
+      });
+    }
   }
 
   @override
   void dispose() {
-    _videoPlayerController.dispose();
+    if (_videoPlayerController != null) {
+      _videoPlayerController!.dispose();
+    }
     if (_chewieController != null) {
       _chewieController!.dispose();
     }
+
     super.dispose();
   }
 
@@ -84,8 +119,9 @@ class _ReelsPageState extends State<ReelsPage> {
     return Stack(
       fit: StackFit.expand,
       children: [
-        _chewieController != null &&
-                _chewieController!.videoPlayerController.value.isInitialized
+        (_chewieController != null &&
+                _chewieController!.videoPlayerController.value.isInitialized &&
+                _videoPlayerController != null)
             ? FittedBox(
                 fit: BoxFit.cover,
                 child: SizedBox(
@@ -107,24 +143,50 @@ class _ReelsPageState extends State<ReelsPage> {
                   ),
                 ),
               )
-            : const Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CircularProgressIndicator(),
-                  SizedBox(height: 10),
-                  Text('Loading...')
-                ],
+            : CachedMemoryImage(
+                fit: BoxFit.cover,
+                uniqueKey: 'app/image/${widget.item.url}',
+                bytes: testValue,
+                frameBuilder: (context, child, frame, _) {
+                  return frame != null
+                      ? TweenAnimationBuilder<double>(
+                          tween: Tween<double>(begin: .1, end: 1),
+                          curve: Curves.ease,
+                          duration: const Duration(milliseconds: 300),
+                          builder: (BuildContext context, double opacity, _) {
+                            return Opacity(
+                              opacity: opacity,
+                              child: child,
+                            );
+                          },
+                        )
+                      : CircularProgressIndicator.adaptive();
+
+                  // Shimmer(style: widget.shimmerStyle)
+                },
+                errorBuilder: (_, __, ___) {
+                  return const Icon(Icons.error);
+                },
               ),
+        // const Column(
+        //     mainAxisAlignment: MainAxisAlignment.center,
+        //     children: [
+        //       CircularProgressIndicator(),
+        //       SizedBox(height: 10),
+        //       Text('Loading...')
+        //     ],
+        //   )
+        //   ,
         if (_liked)
           const Center(
             child: LikeIcon(),
           ),
-        if (widget.showProgressIndicator)
+        if (widget.showProgressIndicator && _videoPlayerController != null)
           Positioned(
             bottom: 0,
             width: MediaQuery.of(context).size.width,
             child: VideoProgressIndicator(
-              _videoPlayerController,
+              _videoPlayerController!,
               allowScrubbing: false,
               colors: const VideoProgressColors(
                 backgroundColor: Colors.blueGrey,
