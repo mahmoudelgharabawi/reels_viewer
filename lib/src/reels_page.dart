@@ -5,10 +5,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:reels_viewer/src/models/reel_model.dart';
-import 'package:reels_viewer/src/utils/convert_numbers_to_short.dart';
 import 'package:reels_viewer/src/utils/url_checker.dart';
 import 'package:video_player/video_player.dart';
-import 'package:video_thumbnail/video_thumbnail.dart';
 import 'components/like_icon.dart';
 import 'components/screen_options.dart';
 
@@ -60,23 +58,12 @@ class _ReelsPageState extends State<ReelsPage> {
     // await _cacheManager!.emptyCache();
 
     var videoFile = await _cacheManager!.getFileFromCache(widget.item.url);
-    imageUint8list = null;
 
     if (videoFile == null) {
-      print('file not found in cache');
-
       _cacheManager!.downloadFile(widget.item.url);
       _videoPlayerController =
           VideoPlayerController.networkUrl(Uri.parse(widget.item.url));
-      imageUint8list = await VideoThumbnail.thumbnailData(
-        video: widget.item.url,
-        quality: 25,
-      );
-      testValue = imageUint8list;
-
-      print('image uintList : $imageUint8list');
     } else {
-      print('file  founded in cache');
       _videoPlayerController = VideoPlayerController.file(videoFile.file);
     }
 
@@ -146,7 +133,7 @@ class _ReelsPageState extends State<ReelsPage> {
             : CachedMemoryImage(
                 fit: BoxFit.cover,
                 uniqueKey: 'app/image/${widget.item.url}',
-                bytes: testValue,
+                bytes: widget.item.videoThumbnail,
                 frameBuilder: (context, child, frame, _) {
                   return frame != null
                       ? TweenAnimationBuilder<double>(

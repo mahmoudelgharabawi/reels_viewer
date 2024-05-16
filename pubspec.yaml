@@ -1,6 +1,6 @@
 name: reels_viewer
 description: This is a package created in the style of the instagram reels viewer, with which you can pass video url and get reels view.
-version: 1.0.0+3
+version: 1.0.0+4
 homepage: https://github.com/patildarshan66/reels_viewer
 
 environment:
@@ -16,7 +16,6 @@ dependencies:
   intl: ^0.19.0
   video_player: ^2.8.6
   flutter_cache_manager: ^3.3.2
-  video_thumbnail: ^0.5.3
   cached_memory_image: ^1.5.0
 
 dev_dependencies:

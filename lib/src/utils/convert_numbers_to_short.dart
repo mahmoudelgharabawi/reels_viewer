@@ -11,5 +11,3 @@ class NumbersToShort {
     ).format(number).replaceAll('.00', '');
   }
 }
-
-var testValue;
