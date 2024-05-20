@@ -147,7 +147,7 @@ class _ReelsPageState extends State<ReelsPage> {
                             );
                           },
                         )
-                      : CircularProgressIndicator.adaptive();
+                      : const CircularProgressIndicator.adaptive();
 
                   // Shimmer(style: widget.shimmerStyle)
                 },
