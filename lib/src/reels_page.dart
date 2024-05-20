@@ -44,6 +44,7 @@ class _ReelsPageState extends State<ReelsPage> {
   Uint8List? imageUint8list;
 
   bool _liked = false;
+  bool isSwiped = false;
   @override
   void initState() {
     super.initState();
@@ -54,6 +55,7 @@ class _ReelsPageState extends State<ReelsPage> {
   }
 
   Future initializePlayer() async {
+    isSwiped = false;
     _cacheManager ??= DefaultCacheManager();
     // await _cacheManager!.emptyCache();
 
@@ -75,11 +77,14 @@ class _ReelsPageState extends State<ReelsPage> {
         showControls: false,
         looping: false,
       );
+
       setState(() {});
       _videoPlayerController!.addListener(() {
-        if (_videoPlayerController!.value.position ==
-            _videoPlayerController!.value.duration) {
-          widget.swiperController.next();
+        if (_videoPlayerController!.value.isCompleted) {
+          if (!isSwiped) {
+            widget.swiperController.next();
+            isSwiped = true;
+          }
         }
       });
     }
@@ -147,7 +152,7 @@ class _ReelsPageState extends State<ReelsPage> {
                             );
                           },
                         )
-                      : const CircularProgressIndicator.adaptive();
+                      : const SizedBox.shrink();
 
                   // Shimmer(style: widget.shimmerStyle)
                 },
@@ -178,7 +183,7 @@ class _ReelsPageState extends State<ReelsPage> {
               colors: const VideoProgressColors(
                 backgroundColor: Colors.blueGrey,
                 bufferedColor: Colors.blueGrey,
-                playedColor: Colors.blueAccent,
+                playedColor: Colors.black,
               ),
             ),
           ),
