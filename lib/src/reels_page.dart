@@ -48,8 +48,8 @@ class _ReelsPageState extends State<ReelsPage> {
   @override
   void initState() {
     super.initState();
-    if (!UrlChecker.isImageUrl(widget.item.url) &&
-        UrlChecker.isValid(widget.item.url)) {
+    if (!UrlChecker.isImageUrl(widget.item.videoData.url!) &&
+        UrlChecker.isValid(widget.item.videoData.url!)) {
       initializePlayer();
     }
   }
@@ -59,12 +59,13 @@ class _ReelsPageState extends State<ReelsPage> {
     _cacheManager ??= DefaultCacheManager();
     // await _cacheManager!.emptyCache();
 
-    var videoFile = await _cacheManager!.getFileFromCache(widget.item.url);
+    var videoFile =
+        await _cacheManager!.getFileFromCache(widget.item.videoData.url!);
 
     if (videoFile == null) {
-      _cacheManager!.downloadFile(widget.item.url);
-      _videoPlayerController =
-          VideoPlayerController.networkUrl(Uri.parse(widget.item.url));
+      _cacheManager!.downloadFile(widget.item.videoData.url!);
+      _videoPlayerController = VideoPlayerController.networkUrl(
+          Uri.parse(widget.item.videoData.url!));
     } else {
       _videoPlayerController = VideoPlayerController.file(videoFile.file);
     }
@@ -80,6 +81,7 @@ class _ReelsPageState extends State<ReelsPage> {
 
       setState(() {});
       _videoPlayerController!.addListener(() {
+        _videoPlayerController?.value.aspectRatio;
         if (_videoPlayerController!.value.isCompleted) {
           if (!isSwiped) {
             widget.swiperController.next();
@@ -115,16 +117,16 @@ class _ReelsPageState extends State<ReelsPage> {
                 _chewieController!.videoPlayerController.value.isInitialized &&
                 _videoPlayerController != null)
             ? FittedBox(
-                fit: BoxFit.cover,
+                fit: BoxFit.fill,
                 child: SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height,
+                  height: widget.item.videoData.height?.toDouble(),
+                  width: widget.item.videoData.width?.toDouble(),
                   child: GestureDetector(
                     onDoubleTap: () {
                       if (!widget.item.isLiked) {
                         _liked = true;
                         if (widget.onLike != null) {
-                          widget.onLike!(widget.item.url);
+                          widget.onLike!(widget.item.videoData.url!);
                         }
                         setState(() {});
                       }
@@ -136,9 +138,11 @@ class _ReelsPageState extends State<ReelsPage> {
                 ),
               )
             : CachedMemoryImage(
-                fit: BoxFit.cover,
-                uniqueKey: 'app/image/${widget.item.url}',
-                bytes: widget.item.videoThumbnail,
+                height: widget.item.videoData.height?.toDouble(),
+                width: widget.item.videoData.width?.toDouble(),
+                fit: BoxFit.fill,
+                uniqueKey: 'app/image/${widget.item.videoData.url!}',
+                bytes: widget.item.videoData.thumbNail,
                 frameBuilder: (context, child, frame, _) {
                   return frame != null
                       ? TweenAnimationBuilder<double>(

@@ -47,15 +47,20 @@ class ScreenOptions extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         if (item.profileUrl != null)
-                          UserProfileImage(profileUrl: item.profileUrl??''),
+                          UserProfileImage(profileUrl: item.profileUrl ?? ''),
                         if (item.profileUrl == null)
                           const CircleAvatar(
                             child: Icon(Icons.person, size: 18),
                             radius: 16,
                           ),
                         const SizedBox(width: 6),
-                        Text(item.userName,
-                            style: const TextStyle(color: Colors.white)),
+                        SizedBox(
+                          width: 100,
+                          child: Text(item.userName,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(color: Colors.white)),
+                        ),
                         const SizedBox(width: 10),
                         if (showVerifiedTick)
                           const Icon(
@@ -99,12 +104,13 @@ class ScreenOptions extends StatelessWidget {
                 ),
               ),
               Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   if (onLike != null && !item.isLiked)
                     IconButton(
                       icon: const Icon(Icons.favorite_outline,
                           color: Colors.white),
-                      onPressed: () => onLike!(item.url),
+                      onPressed: () => onLike!(item.videoData.url!),
                     ),
                   if (item.isLiked)
                     const Icon(Icons.favorite_rounded, color: Colors.red),
@@ -115,18 +121,24 @@ class ScreenOptions extends StatelessWidget {
                     icon:
                         const Icon(Icons.comment_rounded, color: Colors.white),
                     onPressed: () {
-                  if(onComment!=null)  {  showModalBottomSheet(
-                        barrierColor: Colors.transparent,
-                        context: context,
-                        builder: (ctx) => CommentBottomSheet(commentList: item.commentList??[],onComment: onComment)
-                      );}
+                      if (onComment != null) {
+                        showModalBottomSheet(
+                            barrierColor: Colors.transparent,
+                            context: context,
+                            builder: (ctx) => CommentBottomSheet(
+                                commentList: item.commentList ?? [],
+                                onComment: onComment));
+                      }
                     },
                   ),
-                  Text(NumbersToShort.convertNumToShort(item.commentList?.length??0), style: const TextStyle(color: Colors.white)),
+                  Text(
+                      NumbersToShort.convertNumToShort(
+                          item.commentList?.length ?? 0),
+                      style: const TextStyle(color: Colors.white)),
                   const SizedBox(height: 20),
                   if (onShare != null)
                     InkWell(
-                      onTap: () => onShare!(item.url),
+                      onTap: () => onShare!(item.videoData.url!),
                       child: Transform(
                         transform: Matrix4.rotationZ(5.8),
                         child: const Icon(
