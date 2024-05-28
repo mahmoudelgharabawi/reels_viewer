@@ -13,8 +13,8 @@ import 'components/screen_options.dart';
 class ReelsPage extends StatefulWidget {
   final ReelModel item;
   final bool showVerifiedTick;
-  final Function(String)? onShare;
-  final Function(String)? onLike;
+  final Function(ReelModel)? onShare;
+  final Function(ReelModel)? onLike;
   final Function(String)? onComment;
   final Function()? onClickMoreBtn;
   final Function()? onFollow;
@@ -126,7 +126,7 @@ class _ReelsPageState extends State<ReelsPage> {
                       if (!widget.item.isLiked) {
                         _liked = true;
                         if (widget.onLike != null) {
-                          widget.onLike!(widget.item.videoData.url!);
+                          widget.onLike!(widget.item);
                         }
                         setState(() {});
                       }

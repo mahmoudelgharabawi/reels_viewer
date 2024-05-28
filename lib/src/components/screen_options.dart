@@ -8,8 +8,8 @@ import 'comment_bottomsheet.dart';
 class ScreenOptions extends StatelessWidget {
   final ReelModel item;
   final bool showVerifiedTick;
-  final Function(String)? onShare;
-  final Function(String)? onLike;
+  final Function(ReelModel)? onShare;
+  final Function(ReelModel)? onLike;
   final Function(String)? onComment;
   final Function()? onClickMoreBtn;
   final Function()? onFollow;
@@ -110,10 +110,14 @@ class ScreenOptions extends StatelessWidget {
                     IconButton(
                       icon: const Icon(Icons.favorite_outline,
                           color: Colors.white),
-                      onPressed: () => onLike!(item.videoData.url!),
+                      onPressed: () => onLike!(item),
                     ),
                   if (item.isLiked)
-                    const Icon(Icons.favorite_rounded, color: Colors.red),
+                    IconButton(
+                      icon:
+                          const Icon(Icons.favorite_rounded, color: Colors.red),
+                      onPressed: () => onLike!(item),
+                    ),
                   Text(NumbersToShort.convertNumToShort(item.likeCount),
                       style: const TextStyle(color: Colors.white)),
                   const SizedBox(height: 20),
@@ -138,7 +142,7 @@ class ScreenOptions extends StatelessWidget {
                   const SizedBox(height: 20),
                   if (onShare != null)
                     InkWell(
-                      onTap: () => onShare!(item.videoData.url!),
+                      onTap: () => onShare!(item),
                       child: Transform(
                         transform: Matrix4.rotationZ(5.8),
                         child: const Icon(

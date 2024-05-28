@@ -4,8 +4,8 @@ import 'package:reels_viewer/src/models/video_data.dart';
 class ReelModel {
   final String? id;
   VideoData videoData;
-  final bool isLiked;
-  final int likeCount;
+  bool isLiked;
+  int likeCount;
   final String userName;
   final String? profileUrl;
   final String? reelDescription;

@@ -11,10 +11,10 @@ class ReelsViewer extends StatefulWidget {
   final bool showVerifiedTick;
 
   /// function invoke when user click on share btn and return reel url
-  final Function(String)? onShare;
+  final Function(ReelModel)? onShare;
 
   /// function invoke when user click on like btn and return reel url
-  final Function(String)? onLike;
+  final Function(ReelModel)? onLike;
 
   /// function invoke when user click on comment btn and return reel comment
   final Function(String)? onComment;
