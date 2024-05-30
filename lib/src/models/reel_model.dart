@@ -5,7 +5,12 @@ class ReelModel {
   final String? id;
   VideoData videoData;
   bool isLiked;
+  bool isFollowing;
   int likeCount;
+  String followingText;
+  String followText;
+  String showMoreText;
+  String showLessText;
   final String userName;
   final String? profileUrl;
   final String? reelDescription;
@@ -14,7 +19,12 @@ class ReelModel {
   ReelModel(this.videoData, this.userName,
       {this.id,
       this.isLiked = false,
+      this.isFollowing = false,
       this.likeCount = 0,
+      this.followingText = 'Following',
+      this.followText = 'Follow',
+      this.showMoreText = 'Show More',
+      this.showLessText = 'Show Less',
       this.profileUrl,
       this.reelDescription,
       this.musicName,

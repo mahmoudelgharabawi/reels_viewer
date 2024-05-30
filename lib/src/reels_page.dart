@@ -3,6 +3,7 @@ import 'package:card_swiper/card_swiper.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:reels_viewer/src/models/reel_model.dart';
 import 'package:reels_viewer/src/utils/url_checker.dart';
@@ -111,7 +112,7 @@ class _ReelsPageState extends State<ReelsPage> {
 
   Widget getVideoView() {
     return Stack(
-      fit: StackFit.expand,
+      fit: StackFit.passthrough,
       children: [
         (_chewieController != null &&
                 _chewieController!.videoPlayerController.value.isInitialized &&
@@ -191,14 +192,21 @@ class _ReelsPageState extends State<ReelsPage> {
               ),
             ),
           ),
-        ScreenOptions(
-          onClickMoreBtn: widget.onClickMoreBtn,
-          onComment: widget.onComment,
-          onFollow: widget.onFollow,
-          onLike: widget.onLike,
-          onShare: widget.onShare,
-          showVerifiedTick: widget.showVerifiedTick,
-          item: widget.item,
+        Positioned(
+          bottom: 0,
+          width: MediaQuery.of(context)
+              .size
+              .width, // <<<HERE - max width of the screen
+
+          child: ScreenOptions(
+            onClickMoreBtn: widget.onClickMoreBtn,
+            onComment: widget.onComment,
+            onFollow: widget.onFollow,
+            onLike: widget.onLike,
+            onShare: widget.onShare,
+            showVerifiedTick: widget.showVerifiedTick,
+            item: widget.item,
+          ),
         )
       ],
     );
