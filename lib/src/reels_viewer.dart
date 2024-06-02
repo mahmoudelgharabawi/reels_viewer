@@ -39,7 +39,8 @@ class ReelsViewer extends StatefulWidget {
 
   /// function invoke when user click on back btn
   final Function()? onClickBackArrow;
-
+  final Function(ReelModel)? onWhatsAppClicked;
+  final bool closeOnEnd;
   const ReelsViewer({
     Key? key,
     required this.reelsList,
@@ -47,12 +48,14 @@ class ReelsViewer extends StatefulWidget {
     this.onClickMoreBtn,
     this.onComment,
     this.onFollow,
+    this.onWhatsAppClicked,
     this.onLike,
     this.onShare,
     this.appbarTitle,
     this.showAppbar = true,
     this.onClickBackArrow,
     this.onIndexChanged,
+    this.closeOnEnd = false,
     this.showProgressIndicator = true,
   }) : super(key: key);
 
@@ -77,8 +80,11 @@ class _ReelsViewerState extends State<ReelsViewer> {
         children: [
           //We need swiper for every content
           Swiper(
+            duration: 1000,
             itemBuilder: (BuildContext context, int index) {
               return ReelsPage(
+                closeOnEnd: widget.closeOnEnd,
+                onWhatsAppClicked: widget.onWhatsAppClicked,
                 item: widget.reelsList[index],
                 onClickMoreBtn: widget.onClickMoreBtn,
                 onComment: widget.onComment,
@@ -97,7 +103,8 @@ class _ReelsViewerState extends State<ReelsViewer> {
           ),
           if (widget.showAppbar)
             Container(
-              color: Colors.black26,
+              margin: EdgeInsets.only(top: 25),
+              color: Colors.transparent,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -108,14 +115,14 @@ class _ReelsViewerState extends State<ReelsViewer> {
                         Icons.arrow_back,
                         color: Colors.white,
                       )),
-                  Text(
-                    widget.appbarTitle ?? 'Reels View',
-                    style: const TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white),
-                  ),
-                  const SizedBox(),
+                  // Text(
+                  //   widget.appbarTitle ?? 'Reels View',
+                  //   style: const TextStyle(
+                  //       fontSize: 22,
+                  //       fontWeight: FontWeight.w600,
+                  //       color: Colors.white),
+                  // ),
+                  // const SizedBox(),
                 ],
               ),
             ),

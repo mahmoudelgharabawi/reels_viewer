@@ -1,3 +1,5 @@
+import 'dart:isolate';
+
 import 'package:cached_memory_image/cached_memory_image.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:chewie/chewie.dart';
@@ -17,20 +19,25 @@ class ReelsPage extends StatefulWidget {
   final Function(ReelModel)? onShare;
   final Function(ReelModel)? onLike;
   final Function(String)? onComment;
+  final Function(ReelModel)? onWhatsAppClicked;
   final Function()? onClickMoreBtn;
   final Function()? onFollow;
   final SwiperController swiperController;
   final bool showProgressIndicator;
+  final bool closeOnEnd;
+
   const ReelsPage({
     Key? key,
     required this.item,
     this.showVerifiedTick = true,
     this.onClickMoreBtn,
     this.onComment,
+    this.onWhatsAppClicked,
     this.onFollow,
     this.onLike,
     this.onShare,
     this.showProgressIndicator = true,
+    this.closeOnEnd = false,
     required this.swiperController,
   }) : super(key: key);
 
@@ -62,11 +69,13 @@ class _ReelsPageState extends State<ReelsPage> {
 
     var videoFile =
         await _cacheManager!.getFileFromCache(widget.item.videoData.url!);
+    print('Video fileCCCCCCCCCCCCCCCC: ${videoFile} ');
+    setState(() {});
 
     if (videoFile == null) {
-      _cacheManager!.downloadFile(widget.item.videoData.url!);
       _videoPlayerController = VideoPlayerController.networkUrl(
           Uri.parse(widget.item.videoData.url!));
+      _cacheManager!.downloadFile(widget.item.videoData.url!);
     } else {
       _videoPlayerController = VideoPlayerController.file(videoFile.file);
     }
@@ -82,9 +91,17 @@ class _ReelsPageState extends State<ReelsPage> {
 
       setState(() {});
       _videoPlayerController!.addListener(() {
-        _videoPlayerController?.value.aspectRatio;
+        print('>>>position:${_videoPlayerController?.value.position}');
+        print('>>>isPlaying:${_videoPlayerController?.value.isPlaying}');
+        print(
+            '>>>isInitialized:${_videoPlayerController?.value.isInitialized}');
+        print('>>>isCompleted:${_videoPlayerController?.value.isCompleted}');
+        // _videoPlayerController?.value.aspectRatio;
         if (_videoPlayerController!.value.isCompleted) {
           if (!isSwiped) {
+            if (widget.closeOnEnd) {
+              Navigator.of(context).pop();
+            }
             widget.swiperController.next();
             isSwiped = true;
           }
@@ -199,6 +216,7 @@ class _ReelsPageState extends State<ReelsPage> {
               .width, // <<<HERE - max width of the screen
 
           child: ScreenOptions(
+            onWhatsAppClicked: widget.onWhatsAppClicked,
             onClickMoreBtn: widget.onClickMoreBtn,
             onComment: widget.onComment,
             onFollow: widget.onFollow,

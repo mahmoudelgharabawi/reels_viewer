@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:reels_viewer/reels_viewer.dart';
+import 'package:reels_viewer/src/components/comment_bottomsheet.dart';
 import 'package:reels_viewer/src/components/user_profile_image.dart';
 import 'package:reels_viewer/src/utils/convert_numbers_to_short.dart';
 import 'package:rich_readmore/rich_readmore.dart';
@@ -12,6 +14,8 @@ class ScreenOptions extends StatelessWidget {
   final Function(ReelModel)? onShare;
   final Function(ReelModel)? onLike;
   final Function(String)? onComment;
+  final Function(ReelModel)? onWhatsAppClicked;
+
   final Function()? onClickMoreBtn;
   final Function()? onFollow;
 
@@ -21,6 +25,7 @@ class ScreenOptions extends StatelessWidget {
     this.showVerifiedTick = true,
     this.onClickMoreBtn,
     this.onComment,
+    this.onWhatsAppClicked,
     this.onFollow,
     this.onLike,
     this.onShare,
@@ -76,10 +81,12 @@ class ScreenOptions extends StatelessWidget {
                         ),
                       if (showVerifiedTick) const SizedBox(width: 6),
                       if (onFollow != null)
-                        OutlinedButton(
-                          style: OutlinedButton.styleFrom(
-                              minimumSize: Size(90, 30),
-                              fixedSize: Size(90, 30)),
+                        TextButton(
+                          style: TextButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                            side: const BorderSide(color: Colors.white),
+                            borderRadius: BorderRadius.circular(20),
+                          )),
                           onPressed: onFollow,
                           child: Text(
                             item.isFollowing
@@ -139,37 +146,38 @@ class ScreenOptions extends StatelessWidget {
                 ),
               Text(NumbersToShort.convertNumToShort(item.likeCount),
                   style: const TextStyle(color: Colors.white)),
-              const SizedBox(height: 20),
-              IconButton(
-                icon: const Icon(Icons.comment_rounded, color: Colors.white),
-                onPressed: () {
-                  // if (onComment != null) {
-                  //   showModalBottomSheet(
-                  //       barrierColor: Colors.transparent,
-                  //       context: context,
-                  //       builder: (ctx) => CommentBottomSheet(
-                  //           commentList: item.commentList ?? [],
-                  //           onComment: onComment));
-                  // }
-                },
-              ),
-              Text(
-                  NumbersToShort.convertNumToShort(
-                      item.commentList?.length ?? 0),
-                  style: const TextStyle(color: Colors.white)),
-              const SizedBox(height: 20),
-              if (onShare != null)
-                InkWell(
-                  onTap: () => onShare!(item),
-                  child: Transform(
-                    transform: Matrix4.rotationZ(5.8),
-                    child: const Icon(
-                      Icons.send,
-                      color: Colors.white,
-                    ),
-                  ),
+              const SizedBox(height: 15),
+              if (onComment != null)
+                IconButton(
+                  icon: const Icon(Icons.comment_rounded, color: Colors.white),
+                  onPressed: () {
+                    showModalBottomSheet(
+                        barrierColor: Colors.transparent,
+                        context: context,
+                        builder: (ctx) => CommentBottomSheet(
+                            commentList: item.commentList ?? [],
+                            onComment: onComment));
+                  },
                 ),
-              const SizedBox(height: 20),
+              if (onComment != null)
+                Text(
+                    NumbersToShort.convertNumToShort(
+                        item.commentList?.length ?? 0),
+                    style: const TextStyle(color: Colors.white)),
+              if (onComment != null) const SizedBox(height: 15),
+              if (onWhatsAppClicked != null)
+                IconButton(
+                  onPressed: () => onWhatsAppClicked!(item),
+                  icon: const Icon(Boxicons.bxl_whatsapp, color: Colors.white),
+                ),
+              if (onWhatsAppClicked != null) const SizedBox(height: 15),
+              if (onShare != null)
+                IconButton(
+                  icon: const Icon(Boxicons.bxs_save),
+                  onPressed: () => onShare!(item),
+                  color: Colors.white,
+                ),
+              if (onShare != null) const SizedBox(height: 15),
               if (onClickMoreBtn != null)
                 IconButton(
                   icon: const Icon(Icons.more_vert),
