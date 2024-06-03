@@ -134,21 +134,21 @@ class _ReelsPageState extends State<ReelsPage> {
         (_chewieController != null &&
                 _chewieController!.videoPlayerController.value.isInitialized &&
                 _videoPlayerController != null)
-            ? FittedBox(
-                fit: BoxFit.fill,
-                child: SizedBox(
-                  height: widget.item.videoData.height?.toDouble(),
-                  width: widget.item.videoData.width?.toDouble(),
-                  child: GestureDetector(
-                    onDoubleTap: () {
-                      if (!widget.item.isLiked) {
-                        _liked = true;
-                        if (widget.onLike != null) {
-                          widget.onLike!(widget.item);
-                        }
-                        setState(() {});
+            ? SizedBox(
+                height: widget.item.videoData.height?.toDouble(),
+                width: widget.item.videoData.width?.toDouble(),
+                child: GestureDetector(
+                  onDoubleTap: () {
+                    if (!widget.item.isLiked) {
+                      _liked = true;
+                      if (widget.onLike != null) {
+                        widget.onLike!(widget.item);
                       }
-                    },
+                      setState(() {});
+                    }
+                  },
+                  child: Transform.scale(
+                    scale: 1.1,
                     child: Chewie(
                       controller: _chewieController!,
                     ),
