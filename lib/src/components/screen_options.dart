@@ -12,12 +12,13 @@ class ScreenOptions extends StatelessWidget {
   final ReelModel item;
   final bool showVerifiedTick;
   final Function(ReelModel)? onShare;
+  final Function(ReelModel)? onSaved;
   final Function(ReelModel)? onLike;
   final Function(String)? onComment;
   final Function(ReelModel)? onWhatsAppClicked;
 
   final Function()? onClickMoreBtn;
-  final Function()? onFollow;
+  final Function(ReelModel)? onFollow;
 
   const ScreenOptions({
     Key? key,
@@ -29,6 +30,7 @@ class ScreenOptions extends StatelessWidget {
     this.onFollow,
     this.onLike,
     this.onShare,
+    this.onSaved,
   }) : super(key: key);
 
   TextStyle get mainSpanTextStyle => TextStyle(
@@ -83,11 +85,12 @@ class ScreenOptions extends StatelessWidget {
                       if (onFollow != null)
                         TextButton(
                           style: TextButton.styleFrom(
+                              fixedSize: Size(item.isFollowing ? 100 : 80, 30),
                               shape: RoundedRectangleBorder(
-                            side: const BorderSide(color: Colors.white),
-                            borderRadius: BorderRadius.circular(20),
-                          )),
-                          onPressed: onFollow,
+                                side: const BorderSide(color: Colors.white),
+                                borderRadius: BorderRadius.circular(10),
+                              )),
+                          onPressed: () => onFollow!(item),
                           child: Text(
                             item.isFollowing
                                 ? item.followingText
@@ -171,6 +174,15 @@ class ScreenOptions extends StatelessWidget {
                   icon: const Icon(Boxicons.bxl_whatsapp, color: Colors.white),
                 ),
               if (onWhatsAppClicked != null) const SizedBox(height: 15),
+              if (onSaved != null)
+                IconButton(
+                  icon: Icon(
+                    item.isSaved ? Boxicons.bxs_bookmark : Boxicons.bx_bookmark,
+                  ),
+                  onPressed: () => onSaved!(item),
+                  color: Colors.white,
+                ),
+              if (onSaved != null) const SizedBox(height: 15),
               if (onShare != null)
                 IconButton(
                   icon: const Icon(Boxicons.bxs_save),

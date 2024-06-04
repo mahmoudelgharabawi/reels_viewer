@@ -10,10 +10,13 @@ class ReelsViewer extends StatefulWidget {
   /// use to show/hide verified tick, by default true
   final bool showVerifiedTick;
 
-  /// function invoke when user click on share btn and return reel url
+  /// function invoke when user click on share btn and return Reel Model
   final Function(ReelModel)? onShare;
 
-  /// function invoke when user click on like btn and return reel url
+  /// function invoke when user click on save btn and return Reel Model
+  final Function(ReelModel)? onSaved;
+
+  /// function invoke when user click on like btn and return Reel Model
   final Function(ReelModel)? onLike;
 
   /// function invoke when user click on comment btn and return reel comment
@@ -26,7 +29,7 @@ class ReelsViewer extends StatefulWidget {
   final Function()? onClickMoreBtn;
 
   /// function invoke when user click on follow btn
-  final Function()? onFollow;
+  final Function(ReelModel)? onFollow;
 
   /// for change appbar title
   final String? appbarTitle;
@@ -51,6 +54,7 @@ class ReelsViewer extends StatefulWidget {
     this.onWhatsAppClicked,
     this.onLike,
     this.onShare,
+    this.onSaved,
     this.appbarTitle,
     this.showAppbar = true,
     this.onClickBackArrow,
@@ -90,6 +94,7 @@ class _ReelsViewerState extends State<ReelsViewer> {
                 onComment: widget.onComment,
                 onFollow: widget.onFollow,
                 onLike: widget.onLike,
+                onSaved: widget.onSaved,
                 onShare: widget.onShare,
                 showVerifiedTick: widget.showVerifiedTick,
                 swiperController: controller,

@@ -90,7 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
       onLike: (url) {
         log('Liked reel url ==> $url');
       },
-      onFollow: () {
+      onFollow: (model) {
         log('======> Clicked on follow <======');
       },
       onComment: (comment) {
