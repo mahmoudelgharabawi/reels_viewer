@@ -20,7 +20,7 @@ class ReelsViewer extends StatefulWidget {
   final Function(ReelModel)? onLike;
 
   /// function invoke when user click on comment btn and return reel comment
-  final Function(String)? onComment;
+  final Function(ReelModel)? onComment;
 
   /// function invoke when reel change and return current index
   final Function(int)? onIndexChanged;

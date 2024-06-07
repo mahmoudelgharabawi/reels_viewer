@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 
 class UserProfileImage extends StatelessWidget {
   final String profileUrl;
-  const UserProfileImage({Key? key,required this.profileUrl}) : super(key: key);
+  const UserProfileImage({Key? key, required this.profileUrl})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,8 +28,7 @@ class UserProfileImage extends StatelessWidget {
         width: 20,
         child: CircularProgressIndicator(),
       ),
-      errorWidget: (context, url, error) =>
-      const SizedBox(
+      errorWidget: (context, url, error) => const SizedBox(
         height: 20,
         width: 20,
         child: Icon(Icons.error),
@@ -36,4 +36,3 @@ class UserProfileImage extends StatelessWidget {
     );
   }
 }
-

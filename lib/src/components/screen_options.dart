@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:reels_viewer/reels_viewer.dart';
-import 'package:reels_viewer/src/components/comment_bottomsheet.dart';
 import 'package:reels_viewer/src/components/user_profile_image.dart';
 import 'package:reels_viewer/src/utils/convert_numbers_to_short.dart';
 import 'package:rich_readmore/rich_readmore.dart';
@@ -14,7 +13,7 @@ class ScreenOptions extends StatelessWidget {
   final Function(ReelModel)? onShare;
   final Function(ReelModel)? onSaved;
   final Function(ReelModel)? onLike;
-  final Function(String)? onComment;
+  final Function(ReelModel)? onComment;
   final Function(ReelModel)? onWhatsAppClicked;
 
   final Function()? onClickMoreBtn;
@@ -55,7 +54,7 @@ class ScreenOptions extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 160),
+                  const SizedBox(height: 250),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
@@ -83,26 +82,42 @@ class ScreenOptions extends StatelessWidget {
                         ),
                       if (showVerifiedTick) const SizedBox(width: 6),
                       if (onFollow != null)
-                        TextButton(
-                          style: TextButton.styleFrom(
-                              fixedSize: Size(item.isFollowing ? 100 : 80, 30),
-                              shape: RoundedRectangleBorder(
-                                side: const BorderSide(color: Colors.white),
-                                borderRadius: BorderRadius.circular(10),
-                              )),
-                          onPressed: () => onFollow!(item),
-                          child: Text(
-                            item.isFollowing
-                                ? item.followingText
-                                : item.followText,
-                            style: const TextStyle(
-                              color: Colors.white,
+                        InkWell(
+                          onTap: () => onFollow!(item),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.white),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                item.isFollowing
+                                    ? item.followingText
+                                    : item.followText,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
                             ),
                           ),
                         ),
+
+                      // TextButton(
+                      //   style: TextButton.styleFrom(
+                      //       fixedSize: Size(item.isFollowing ? 100 : 80, 30),
+                      //       shape: RoundedRectangleBorder(
+                      //         side: const BorderSide(color: Colors.white),
+                      //         borderRadius: BorderRadius.circular(10),
+                      //       )),
+                      //   onPressed: () => onFollow!(item),
+                      //   child:,
+                      // ),
                     ],
                   ),
-                  const SizedBox(width: 6),
+                  if (item.reelDescription != null &&
+                      item.reelDescription != '')
+                    const SizedBox(height: 6),
                   if (item.reelDescription != null &&
                       item.reelDescription != '')
                     RichReadMoreText(
@@ -116,7 +131,7 @@ class ScreenOptions extends StatelessWidget {
                         trimExpandedText: item.showLessText,
                       ),
                     ),
-                  const SizedBox(height: 10),
+                  if (item.musicName != null) const SizedBox(height: 10),
                   if (item.musicName != null)
                     Row(
                       children: [
@@ -152,21 +167,22 @@ class ScreenOptions extends StatelessWidget {
               const SizedBox(height: 15),
               if (onComment != null)
                 IconButton(
-                  icon: const Icon(Icons.comment_rounded, color: Colors.white),
+                  icon: const Icon(Boxicons.bx_comment, color: Colors.white),
                   onPressed: () {
-                    showModalBottomSheet(
-                        barrierColor: Colors.transparent,
-                        context: context,
-                        builder: (ctx) => CommentBottomSheet(
-                            commentList: item.commentList ?? [],
-                            onComment: onComment));
+                    onComment!(item);
+                    // showModalBottomSheet(
+                    //     barrierColor: Colors.transparent,
+                    //     context: context,
+                    //     builder: (ctx) => CommentBottomSheet(
+                    //         commentList: item.commentList ?? [],
+                    //         onComment: onComment));
                   },
                 ),
-              if (onComment != null)
-                Text(
-                    NumbersToShort.convertNumToShort(
-                        item.commentList?.length ?? 0),
-                    style: const TextStyle(color: Colors.white)),
+              // if (onComment != null)
+              //   Text(
+              //       NumbersToShort.convertNumToShort(
+              //           item.commentList?.length ?? 0),
+              //       style: const TextStyle(color: Colors.white)),
               if (onComment != null) const SizedBox(height: 15),
               if (onWhatsAppClicked != null)
                 IconButton(

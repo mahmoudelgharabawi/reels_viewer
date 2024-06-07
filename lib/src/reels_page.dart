@@ -17,7 +17,7 @@ class ReelsPage extends StatefulWidget {
   final Function(ReelModel)? onShare;
   final Function(ReelModel)? onSaved;
   final Function(ReelModel)? onLike;
-  final Function(String)? onComment;
+  final Function(ReelModel)? onComment;
   final Function(ReelModel)? onWhatsAppClicked;
   final Function()? onClickMoreBtn;
   final Function(ReelModel)? onFollow;
