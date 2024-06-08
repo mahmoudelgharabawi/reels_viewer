@@ -101,6 +101,7 @@ class _ReelsPageState extends State<ReelsPage> {
             if (widget.closeOnEnd) {
               Navigator.of(context).pop();
             }
+
             widget.swiperController.next();
             isSwiped = true;
           }

@@ -87,7 +87,12 @@ class _ReelsViewerState extends State<ReelsViewer> {
             duration: 1000,
             itemBuilder: (BuildContext context, int index) {
               return ReelsPage(
-                closeOnEnd: widget.closeOnEnd,
+                closeOnEnd: widget.closeOnEnd
+                    ? index ==
+                        (widget.reelsList.isNotEmpty
+                            ? (widget.reelsList.length - 1)
+                            : 0)
+                    : false,
                 onWhatsAppClicked: widget.onWhatsAppClicked,
                 item: widget.reelsList[index],
                 onClickMoreBtn: widget.onClickMoreBtn,
