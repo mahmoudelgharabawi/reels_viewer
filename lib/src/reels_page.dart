@@ -201,11 +201,11 @@ class _ReelsPageState extends State<ReelsPage> {
             width: MediaQuery.of(context).size.width,
             child: VideoProgressIndicator(
               _videoPlayerController!,
-              allowScrubbing: false,
-              colors: const VideoProgressColors(
-                backgroundColor: Colors.blueGrey,
-                bufferedColor: Colors.blueGrey,
-                playedColor: Colors.black,
+              allowScrubbing: true,
+              colors: VideoProgressColors(
+                backgroundColor: Colors.white.withOpacity(.3),
+                bufferedColor: Colors.white.withOpacity(.3),
+                playedColor: Colors.white,
               ),
             ),
           ),
