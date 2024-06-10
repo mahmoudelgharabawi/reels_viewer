@@ -19,6 +19,9 @@ class ReelsPage extends StatefulWidget {
   final Function(ReelModel)? onLike;
   final Function(ReelModel)? onComment;
   final Function(ReelModel)? onWhatsAppClicked;
+
+  final Function(ReelModel)? onProfileClicked;
+
   final Function()? onClickMoreBtn;
   final Function(ReelModel)? onFollow;
   final SwiperController swiperController;
@@ -32,6 +35,7 @@ class ReelsPage extends StatefulWidget {
     this.onClickMoreBtn,
     this.onComment,
     this.onWhatsAppClicked,
+    this.onProfileClicked,
     this.onFollow,
     this.onLike,
     this.onShare,
@@ -216,6 +220,7 @@ class _ReelsPageState extends State<ReelsPage> {
               .width, // <<<HERE - max width of the screen
 
           child: ScreenOptions(
+            onProfileClicked: widget.onProfileClicked,
             onSaved: widget.onSaved,
             onWhatsAppClicked: widget.onWhatsAppClicked,
             onClickMoreBtn: widget.onClickMoreBtn,

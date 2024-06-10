@@ -11,6 +11,7 @@ class ScreenOptions extends StatelessWidget {
   final ReelModel item;
   final bool showVerifiedTick;
   final Function(ReelModel)? onShare;
+  final Function(ReelModel)? onProfileClicked;
   final Function(ReelModel)? onSaved;
   final Function(ReelModel)? onLike;
   final Function(ReelModel)? onComment;
@@ -27,6 +28,7 @@ class ScreenOptions extends StatelessWidget {
     this.onComment,
     this.onWhatsAppClicked,
     this.onFollow,
+    this.onProfileClicked,
     this.onLike,
     this.onShare,
     this.onSaved,
@@ -47,106 +49,110 @@ class ScreenOptions extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // const SizedBox(height: 250),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      if (item.profileUrl != null)
-                        UserProfileImage(profileUrl: item.profileUrl ?? ''),
-                      if (item.profileUrl == null)
-                        const CircleAvatar(
-                          child: Icon(Icons.person, size: 18),
-                          radius: 16,
-                        ),
-                      const SizedBox(width: 6),
-                      SizedBox(
-                        width: 150,
-                        child: Text(item.userName,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(color: Colors.white)),
-                      ),
-                      const SizedBox(width: 15),
-                      if (showVerifiedTick)
-                        const Icon(
-                          Icons.verified,
-                          size: 15,
-                          color: Colors.white,
-                        ),
-                      if (showVerifiedTick) const SizedBox(width: 6),
-                      if (onFollow != null)
-                        InkWell(
-                          onTap: () => onFollow!(item),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.white),
-                              borderRadius: BorderRadius.circular(15),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // const SizedBox(height: 250),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    InkWell(
+                      onTap: () => onProfileClicked!(item),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          if (item.profileUrl != null)
+                            UserProfileImage(profileUrl: item.profileUrl ?? ''),
+                          if (item.profileUrl == null)
+                            const CircleAvatar(
+                              child: Icon(Icons.person, size: 18),
+                              radius: 16,
                             ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                item.isFollowing
-                                    ? item.followingText
-                                    : item.followText,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                ),
+                          const SizedBox(width: 6),
+                          SizedBox(
+                            width: 150,
+                            child: Text(item.userName,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(color: Colors.white)),
+                          ),
+                          const SizedBox(width: 15),
+                          if (showVerifiedTick)
+                            const Icon(
+                              Icons.verified,
+                              size: 15,
+                              color: Colors.white,
+                            ),
+                          if (showVerifiedTick) const SizedBox(width: 6),
+                        ],
+                      ),
+                    ),
+
+                    if (onFollow != null)
+                      InkWell(
+                        onTap: () => onFollow!(item),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.white),
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              item.isFollowing
+                                  ? item.followingText
+                                  : item.followText,
+                              style: const TextStyle(
+                                color: Colors.white,
                               ),
                             ),
                           ),
                         ),
+                      ),
 
-                      // TextButton(
-                      //   style: TextButton.styleFrom(
-                      //       fixedSize: Size(item.isFollowing ? 150 : 80, 30),
-                      //       shape: RoundedRectangleBorder(
-                      //         side: const BorderSide(color: Colors.white),
-                      //         borderRadius: BorderRadius.circular(15),
-                      //       )),
-                      //   onPressed: () => onFollow!(item),
-                      //   child:,
-                      // ),
+                    // TextButton(
+                    //   style: TextButton.styleFrom(
+                    //       fixedSize: Size(item.isFollowing ? 150 : 80, 30),
+                    //       shape: RoundedRectangleBorder(
+                    //         side: const BorderSide(color: Colors.white),
+                    //         borderRadius: BorderRadius.circular(15),
+                    //       )),
+                    //   onPressed: () => onFollow!(item),
+                    //   child:,
+                    // ),
+                  ],
+                ),
+                if (item.reelDescription != null && item.reelDescription != '')
+                  const SizedBox(height: 6),
+                if (item.reelDescription != null && item.reelDescription != '')
+                  RichReadMoreText(
+                    TextSpan(
+                        text: item.reelDescription, style: mainSpanTextStyle),
+                    settings: LineModeSettings(
+                      moreStyle: moreLessTextStyle,
+                      lessStyle: moreLessTextStyle,
+                      trimLines: 2,
+                      trimCollapsedText: item.showMoreText,
+                      trimExpandedText: item.showLessText,
+                    ),
+                  ),
+                if (item.musicName != null) const SizedBox(height: 15),
+                if (item.musicName != null)
+                  Row(
+                    children: [
+                      const Icon(
+                        Icons.music_note,
+                        size: 15,
+                        color: Colors.white,
+                      ),
+                      Text(
+                        'Original Audio - ${item.musicName}',
+                        style: const TextStyle(color: Colors.white),
+                      ),
                     ],
                   ),
-                  if (item.reelDescription != null &&
-                      item.reelDescription != '')
-                    const SizedBox(height: 6),
-                  if (item.reelDescription != null &&
-                      item.reelDescription != '')
-                    RichReadMoreText(
-                      TextSpan(
-                          text: item.reelDescription, style: mainSpanTextStyle),
-                      settings: LineModeSettings(
-                        moreStyle: moreLessTextStyle,
-                        lessStyle: moreLessTextStyle,
-                        trimLines: 2,
-                        trimCollapsedText: item.showMoreText,
-                        trimExpandedText: item.showLessText,
-                      ),
-                    ),
-                  if (item.musicName != null) const SizedBox(height: 15),
-                  if (item.musicName != null)
-                    Row(
-                      children: [
-                        const Icon(
-                          Icons.music_note,
-                          size: 15,
-                          color: Colors.white,
-                        ),
-                        Text(
-                          'Original Audio - ${item.musicName}',
-                          style: const TextStyle(color: Colors.white),
-                        ),
-                      ],
-                    ),
-                ],
-              ),
+              ],
             ),
           ),
           Column(
