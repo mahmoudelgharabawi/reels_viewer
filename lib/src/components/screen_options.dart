@@ -34,17 +34,17 @@ class ScreenOptions extends StatelessWidget {
     this.onSaved,
   }) : super(key: key);
 
-  TextStyle get mainSpanTextStyle => TextStyle(
-      fontSize: 14,
-      fontWeight: FontWeight.w500,
-      color: Colors.white.withOpacity(.8));
+  TextStyle get mainSpanTextStyle => const TextStyle(
+        fontSize: 15,
+        color: Colors.white,
+      );
   TextStyle get moreLessTextStyle => const TextStyle(
       fontSize: 16, fontWeight: FontWeight.w700, color: Colors.white);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
@@ -53,78 +53,30 @@ class ScreenOptions extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // const SizedBox(height: 250),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    InkWell(
-                      onTap: () => onProfileClicked!(item),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          if (item.profileUrl != null)
-                            UserProfileImage(profileUrl: item.profileUrl ?? ''),
-                          if (item.profileUrl == null)
-                            const CircleAvatar(
-                              child: Icon(Icons.person, size: 18),
-                              radius: 16,
-                            ),
-                          const SizedBox(width: 6),
-                          SizedBox(
-                            width: 150,
-                            child: Text(item.userName,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(color: Colors.white)),
-                          ),
-                          const SizedBox(width: 15),
-                          if (showVerifiedTick)
-                            const Icon(
-                              Icons.verified,
-                              size: 15,
-                              color: Colors.white,
-                            ),
-                          if (showVerifiedTick) const SizedBox(width: 6),
-                        ],
-                      ),
+                    Text(
+                      item.userName,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                          fontSize: 20,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold),
                     ),
-
-                    if (onFollow != null)
-                      InkWell(
-                        onTap: () => onFollow!(item),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.white),
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              item.isFollowing
-                                  ? item.followingText
-                                  : item.followText,
-                              style: const TextStyle(
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                        ),
+                    const SizedBox(width: 15),
+                    if (showVerifiedTick)
+                      const Icon(
+                        Icons.verified,
+                        size: 15,
+                        color: Colors.white,
                       ),
-
-                    // TextButton(
-                    //   style: TextButton.styleFrom(
-                    //       fixedSize: Size(item.isFollowing ? 150 : 80, 30),
-                    //       shape: RoundedRectangleBorder(
-                    //         side: const BorderSide(color: Colors.white),
-                    //         borderRadius: BorderRadius.circular(15),
-                    //       )),
-                    //   onPressed: () => onFollow!(item),
-                    //   child:,
-                    // ),
+                    if (showVerifiedTick) const SizedBox(width: 6),
                   ],
                 ),
                 if (item.reelDescription != null && item.reelDescription != '')
-                  const SizedBox(height: 6),
+                  const SizedBox(height: 8),
                 if (item.reelDescription != null && item.reelDescription != '')
                   RichReadMoreText(
                     TextSpan(
@@ -155,20 +107,62 @@ class ScreenOptions extends StatelessWidget {
               ],
             ),
           ),
-          Column(
-            children: [
-              likeBtn,
-              commentBtn,
-              whatsAppBtn,
-              savedBtn,
-              shareBtn,
-              moreBtn
-            ],
+          Container(
+            padding: const EdgeInsets.only(bottom: 16),
+            child: Column(
+              children: [
+                profileBtn,
+                likeBtn,
+                commentBtn,
+                // whatsAppBtn,
+                savedBtn,
+                shareBtn,
+                moreBtn
+              ],
+            ),
           )
         ],
       ),
     );
   }
+
+  Widget get profileBtn => Stack(
+        children: [
+          Column(
+            children: [
+              if (item.profileUrl != null)
+                UserProfileImage(profileUrl: item.profileUrl ?? ''),
+              if (item.profileUrl == null)
+                CircleAvatar(
+                  backgroundColor: Colors.grey,
+                  child: Text(
+                    item.userName[0].toUpperCase(),
+                    style: const TextStyle(fontSize: 18),
+                  ),
+                ),
+              const SizedBox(height: 16)
+            ],
+          ),
+          Positioned.fill(
+            bottom: 10,
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: CircleAvatar(
+                child: item.isFollowing
+                    ? Icon(
+                        Icons.check,
+                        size: 12,
+                      )
+                    : Icon(
+                        Icons.add,
+                        size: 12,
+                      ),
+                radius: 8,
+              ),
+            ),
+          )
+        ],
+      );
 
   Widget get moreBtn => Column(
         children: [
@@ -194,7 +188,7 @@ class ScreenOptions extends StatelessWidget {
               ),
               onTap: () => onShare!(item),
             ),
-          if (onShare != null) const SizedBox(height: 20),
+          if (onShare != null) const SizedBox(height: 16),
         ],
       );
 
@@ -203,13 +197,19 @@ class ScreenOptions extends StatelessWidget {
           if (onSaved != null)
             InkWell(
               child: Icon(
-                item.isSaved ? Boxicons.bxs_bookmark : Boxicons.bx_bookmark,
+                item.isSaved ? Icons.bookmark_border : Icons.bookmark,
                 color: Colors.white,
-                size: 30,
               ),
               onTap: () => onSaved!(item),
             ),
-          if (onSaved != null) const SizedBox(height: 20),
+          if (onSaved != null) const SizedBox(height: 4),
+          if (onSaved != null)
+            Text(NumbersToShort.convertNumToShort(item.likeCount),
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 14,
+                )),
+          if (onSaved != null) const SizedBox(height: 16),
         ],
       );
 
@@ -224,7 +224,7 @@ class ScreenOptions extends StatelessWidget {
                 size: 30,
               ),
             ),
-          if (onWhatsAppClicked != null) const SizedBox(height: 20),
+          if (onWhatsAppClicked != null) const SizedBox(height: 16),
         ],
       );
 
@@ -234,6 +234,7 @@ class ScreenOptions extends StatelessWidget {
             InkWell(
               onTap: () {
                 onComment!(item);
+
                 // showModalBottomSheet(
                 //     barrierColor: Colors.transparent,
                 //     context: context,
@@ -241,15 +242,21 @@ class ScreenOptions extends StatelessWidget {
                 //         commentList: item.commentList ?? [],
                 //         onComment: onComment));
               },
-              child: const Icon(CupertinoIcons.conversation_bubble,
-                  size: 30, color: Colors.white),
+              child:
+                  const Icon(Icons.mode_comment_outlined, color: Colors.white),
             ),
+          const SizedBox(height: 4),
+          Text(NumbersToShort.convertNumToShort(item.likeCount),
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 14,
+              )),
           // if (onComment != null)
           //   Text(
           //       NumbersToShort.convertNumToShort(
           //           item.commentList?.length ?? 0),
           //       style: const TextStyle(color: Colors.white)),
-          if (onComment != null) const SizedBox(height: 20),
+          if (onComment != null) const SizedBox(height: 16),
         ],
       );
 
@@ -258,23 +265,41 @@ class ScreenOptions extends StatelessWidget {
           if (onLike != null && !item.isLiked)
             InkWell(
               onTap: () => onLike!(item),
-              child: const Icon(Icons.favorite_outline,
-                  size: 30, color: Colors.white),
+              child: const Icon(Icons.favorite_outline, color: Colors.white),
             ),
           if (item.isLiked)
             InkWell(
               onTap: () => onLike!(item),
-              child: const Icon(Icons.favorite_outline,
-                  size: 30, color: Colors.red),
+              child: const Icon(Icons.favorite, size: 30, color: Colors.red),
             ),
+          const SizedBox(height: 4),
           Text(NumbersToShort.convertNumToShort(item.likeCount),
               style: const TextStyle(
                 color: Colors.white,
-                fontSize: 13,
-                fontWeight: FontWeight.bold,
-                height: 2,
+                fontSize: 14,
               )),
-          const SizedBox(height: 20),
+          const SizedBox(height: 16),
         ],
       );
 }
+  // if (onFollow != null)
+                    //   InkWell(
+                    //     onTap: () => onFollow!(item),
+                    //     child: Container(
+                    //       decoration: BoxDecoration(
+                    //         border: Border.all(color: Colors.white),
+                    //         borderRadius: BorderRadius.circular(15),
+                    //       ),
+                    //       child: Padding(
+                    //         padding: const EdgeInsets.all(8.0),
+                    //         child: Text(
+                    //           item.isFollowing
+                    //               ? item.followingText
+                    //               : item.followText,
+                    //           style: const TextStyle(
+                    //             color: Colors.white,
+                    //           ),
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ),
