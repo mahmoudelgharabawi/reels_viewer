@@ -17,7 +17,7 @@ class ReelsPage extends StatefulWidget {
   final Function(ReelModel)? onShare;
   final Function(ReelModel)? onSaved;
   final Function(ReelModel)? onLike;
-  final Function(ReelModel)? onComment;
+  final Future<void> Function(ReelModel)? onComment;
   final Function(ReelModel)? onWhatsAppClicked;
 
   final Function(ReelModel)? onProfileClicked;
@@ -152,7 +152,7 @@ class _ReelsPageState extends State<ReelsPage> {
                     }
                   },
                   child: Transform.scale(
-                    scale: 1.1,
+                    scale: 1.05,
                     child: Chewie(
                       controller: _chewieController!,
                     ),
@@ -220,11 +220,23 @@ class _ReelsPageState extends State<ReelsPage> {
               .width, // <<<HERE - max width of the screen
 
           child: ScreenOptions(
-            onProfileClicked: widget.onProfileClicked,
+            onProfileClicked: (model) async {
+              _chewieController!.pause();
+              if (widget.onProfileClicked != null) {
+                await widget.onProfileClicked!(widget.item);
+              }
+              _chewieController!.play();
+            },
             onSaved: widget.onSaved,
             onWhatsAppClicked: widget.onWhatsAppClicked,
             onClickMoreBtn: widget.onClickMoreBtn,
-            onComment: widget.onComment,
+            onComment: (model) async {
+              _chewieController!.pause();
+              if (widget.onComment != null) {
+                await widget.onComment!(widget.item);
+              }
+              _chewieController!.play();
+            },
             onFollow: widget.onFollow,
             onLike: widget.onLike,
             onShare: widget.onShare,

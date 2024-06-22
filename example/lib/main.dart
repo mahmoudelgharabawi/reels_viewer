@@ -93,7 +93,7 @@ class _MyHomePageState extends State<MyHomePage> {
       onFollow: (model) {
         log('======> Clicked on follow <======');
       },
-      onComment: (comment) {
+      onComment: (comment) async {
         log('Comment on reel ==> $comment');
       },
       onClickMoreBtn: () {

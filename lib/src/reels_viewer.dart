@@ -20,7 +20,7 @@ class ReelsViewer extends StatefulWidget {
   final Function(ReelModel)? onLike;
 
   /// function invoke when user click on comment btn and return reel comment
-  final Function(ReelModel)? onComment;
+  final Future<void> Function(ReelModel)? onComment;
 
   /// function invoke when reel change and return current index
   final Function(int)? onIndexChanged;
@@ -30,6 +30,9 @@ class ReelsViewer extends StatefulWidget {
 
   /// function invoke when user click on follow btn
   final Function(ReelModel)? onFollow;
+
+  /// function invoke when user click on profile btn
+  final Function(ReelModel)? onProfileClicked;
 
   /// for change appbar title
   final String? appbarTitle;
@@ -53,6 +56,7 @@ class ReelsViewer extends StatefulWidget {
     this.onFollow,
     this.onWhatsAppClicked,
     this.onLike,
+    this.onProfileClicked,
     this.onShare,
     this.onSaved,
     this.appbarTitle,
@@ -94,6 +98,7 @@ class _ReelsViewerState extends State<ReelsViewer> {
                             : 0)
                     : false,
                 onWhatsAppClicked: widget.onWhatsAppClicked,
+                onProfileClicked: widget.onProfileClicked,
                 item: widget.reelsList[index],
                 onClickMoreBtn: widget.onClickMoreBtn,
                 onComment: widget.onComment,
