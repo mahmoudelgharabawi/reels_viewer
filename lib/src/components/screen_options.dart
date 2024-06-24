@@ -40,7 +40,7 @@ class ScreenOptions extends StatelessWidget {
       );
   TextStyle get moreLessTextStyle => const TextStyle(
       fontSize: 16, fontWeight: FontWeight.w700, color: Colors.white);
-
+  double get iconSize => 28;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -140,6 +140,7 @@ class ScreenOptions extends StatelessWidget {
                 if (item.profileUrl == null)
                   CircleAvatar(
                     backgroundColor: Colors.grey,
+                    radius: iconSize,
                     child: Text(
                       item.userName[0].toUpperCase(),
                       style: const TextStyle(fontSize: 18),
@@ -156,13 +157,13 @@ class ScreenOptions extends StatelessWidget {
                   child: item.isFollowing
                       ? Icon(
                           Icons.check,
-                          size: 12,
+                          size: 14,
                         )
                       : Icon(
                           Icons.add,
-                          size: 12,
+                          size: 14,
                         ),
-                  radius: 8,
+                  radius: 10,
                 ),
               ),
             )
@@ -187,9 +188,10 @@ class ScreenOptions extends StatelessWidget {
         children: [
           if (onShare != null)
             InkWell(
-              child: const Icon(
+              child: Icon(
                 CupertinoIcons.reply,
                 color: Colors.white,
+                size: iconSize,
               ),
               onTap: () => onShare!(item),
             ),
@@ -203,6 +205,7 @@ class ScreenOptions extends StatelessWidget {
             InkWell(
               child: Icon(
                 item.isSaved ? Icons.bookmark : Icons.bookmark_border,
+                size: iconSize,
                 color: Colors.white,
               ),
               onTap: () => onSaved!(item),
@@ -223,9 +226,10 @@ class ScreenOptions extends StatelessWidget {
           if (onWhatsAppClicked != null)
             InkWell(
               onTap: () => onWhatsAppClicked!(item),
-              child: const Icon(
+              child: Icon(
                 Boxicons.bxl_whatsapp,
                 color: Colors.white,
+                size: iconSize,
               ),
             ),
           if (onWhatsAppClicked != null) const SizedBox(height: 16),
@@ -246,8 +250,8 @@ class ScreenOptions extends StatelessWidget {
                 //         commentList: item.commentList ?? [],
                 //         onComment: onComment));
               },
-              child: const Icon(Boxicons.bx_message_square_dots,
-                  color: Colors.white),
+              child: Icon(Boxicons.bx_message_square_dots,
+                  size: iconSize, color: Colors.white),
             ),
           const SizedBox(height: 4),
           Text(NumbersToShort.convertNumToShort(item.commentCount),
@@ -269,12 +273,20 @@ class ScreenOptions extends StatelessWidget {
           if (onLike != null && !item.isLiked)
             InkWell(
               onTap: () => onLike!(item),
-              child: const Icon(Boxicons.bx_like, color: Colors.white),
+              child: Icon(
+                Boxicons.bx_like,
+                color: Colors.white,
+                size: iconSize,
+              ),
             ),
           if (item.isLiked)
             InkWell(
               onTap: () => onLike!(item),
-              child: const Icon(Boxicons.bxs_like, color: Colors.white),
+              child: Icon(
+                Boxicons.bxs_like,
+                color: Colors.white,
+                size: iconSize,
+              ),
             ),
           const SizedBox(height: 4),
           Text(NumbersToShort.convertNumToShort(item.likeCount),

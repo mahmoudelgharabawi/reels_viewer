@@ -12,8 +12,8 @@ class UserProfileImage extends StatelessWidget {
       imageUrl: profileUrl,
       alignment: Alignment.centerLeft,
       imageBuilder: (context, imageProvider) => Container(
-        height: 32,
-        width: 32,
+        height: 40,
+        width: 40,
         padding: EdgeInsets.zero,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),

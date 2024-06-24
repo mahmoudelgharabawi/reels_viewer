@@ -152,7 +152,7 @@ class _ReelsPageState extends State<ReelsPage> {
                     }
                   },
                   child: Transform.scale(
-                    scale: 1.05,
+                    scale: 1.1,
                     child: Chewie(
                       controller: _chewieController!,
                     ),
