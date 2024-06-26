@@ -19,6 +19,7 @@ dependencies:
   cached_memory_image: ^1.5.0
   rich_readmore: ^1.1.1
   flutter_boxicons: ^3.0.0
+  numeral: ^3.0.0
 
 dev_dependencies:
   flutter_test:

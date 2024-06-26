@@ -2,9 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
+import 'package:numeral/numeral.dart';
 import 'package:reels_viewer/reels_viewer.dart';
 import 'package:reels_viewer/src/components/user_profile_image.dart';
-import 'package:reels_viewer/src/utils/convert_numbers_to_short.dart';
 import 'package:rich_readmore/rich_readmore.dart';
 
 class ScreenOptions extends StatelessWidget {
@@ -212,7 +212,7 @@ class ScreenOptions extends StatelessWidget {
             ),
           if (onSaved != null) const SizedBox(height: 4),
           if (onSaved != null)
-            Text(NumbersToShort.convertNumToShort(item.saveCount),
+            Text(item.saveCount.beautiful,
                 style: const TextStyle(
                   color: Colors.white,
                   fontSize: 14,
@@ -254,7 +254,7 @@ class ScreenOptions extends StatelessWidget {
                   size: iconSize, color: Colors.white),
             ),
           const SizedBox(height: 4),
-          Text(NumbersToShort.convertNumToShort(item.commentCount),
+          Text(item.likeCount.beautiful,
               style: const TextStyle(
                 color: Colors.white,
                 fontSize: 14,
@@ -289,7 +289,7 @@ class ScreenOptions extends StatelessWidget {
               ),
             ),
           const SizedBox(height: 4),
-          Text(NumbersToShort.convertNumToShort(item.likeCount),
+          Text(item.likeCount.beautiful,
               style: const TextStyle(
                 color: Colors.white,
                 fontSize: 14,
