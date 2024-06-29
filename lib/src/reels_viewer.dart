@@ -14,10 +14,10 @@ class ReelsViewer extends StatefulWidget {
   final Function(ReelModel)? onShare;
 
   /// function invoke when user click on save btn and return Reel Model
-  final Function(ReelModel)? onSaved;
+  final Future<void> Function(ReelModel)? onSaved;
 
   /// function invoke when user click on like btn and return Reel Model
-  final Function(ReelModel)? onLike;
+  final Future<void> Function(ReelModel)? onLike;
 
   /// function invoke when user click on comment btn and return reel comment
   final Future<void> Function(ReelModel)? onComment;

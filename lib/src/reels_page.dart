@@ -15,8 +15,8 @@ class ReelsPage extends StatefulWidget {
   final ReelModel item;
   final bool showVerifiedTick;
   final Function(ReelModel)? onShare;
-  final Function(ReelModel)? onSaved;
-  final Function(ReelModel)? onLike;
+  final Future<void> Function(ReelModel)? onSaved;
+  final Future<void> Function(ReelModel)? onLike;
   final Future<void> Function(ReelModel)? onComment;
   final Function(ReelModel)? onWhatsAppClicked;
 
@@ -221,24 +221,52 @@ class _ReelsPageState extends State<ReelsPage> {
 
           child: ScreenOptions(
             onProfileClicked: (model) async {
-              _chewieController!.pause();
+              if (_chewieController != null) {
+                _chewieController!.pause();
+              }
               if (widget.onProfileClicked != null) {
                 await widget.onProfileClicked!(widget.item);
               }
-              _chewieController!.play();
+              if (_chewieController != null) {
+                _chewieController!.play();
+              }
             },
-            onSaved: widget.onSaved,
+            onSaved: (model) async {
+              if (_chewieController != null) {
+                _chewieController!.pause();
+              }
+              if (widget.onSaved != null) {
+                await widget.onSaved!(widget.item);
+              }
+              if (_chewieController != null) {
+                _chewieController!.play();
+              }
+            },
             onWhatsAppClicked: widget.onWhatsAppClicked,
             onClickMoreBtn: widget.onClickMoreBtn,
             onComment: (model) async {
-              _chewieController!.pause();
+              if (_chewieController != null) {
+                _chewieController!.pause();
+              }
               if (widget.onComment != null) {
                 await widget.onComment!(widget.item);
               }
-              _chewieController!.play();
+              if (_chewieController != null) {
+                _chewieController!.play();
+              }
             },
             onFollow: widget.onFollow,
-            onLike: widget.onLike,
+            onLike: (model) async {
+              if (_chewieController != null) {
+                _chewieController!.pause();
+              }
+              if (widget.onLike != null) {
+                await widget.onLike!(widget.item);
+              }
+              if (_chewieController != null) {
+                _chewieController!.play();
+              }
+            },
             onShare: widget.onShare,
             showVerifiedTick: widget.showVerifiedTick,
             item: widget.item,
