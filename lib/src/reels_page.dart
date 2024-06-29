@@ -128,10 +128,10 @@ class _ReelsPageState extends State<ReelsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return getVideoView();
+    return getVideoView;
   }
 
-  Widget getVideoView() {
+  Widget get getVideoView {
     return Stack(
       fit: StackFit.passthrough,
       children: [

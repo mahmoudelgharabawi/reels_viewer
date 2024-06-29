@@ -12,11 +12,12 @@ class UserProfileImage extends StatelessWidget {
       imageUrl: profileUrl,
       alignment: Alignment.centerLeft,
       imageBuilder: (context, imageProvider) => Container(
-        height: 40,
-        width: 40,
+        height: 56,
+        width: 56,
         padding: EdgeInsets.zero,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: Colors.black),
+          borderRadius: BorderRadius.circular(50),
           image: DecorationImage(
             image: imageProvider,
             fit: BoxFit.cover,

@@ -116,6 +116,7 @@ class _ReelsViewerState extends State<ReelsViewer> {
             scrollDirection: Axis.vertical,
             onIndexChanged: widget.onIndexChanged,
           ),
+
           if (widget.showAppbar)
             Container(
               margin: EdgeInsets.only(top: 25),
