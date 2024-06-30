@@ -17,10 +17,16 @@ abstract class CacheService {
     if (reelsList.isNotEmpty) {
       for (int i = 0; i < reelsList.length; i++) {
         if (reelsList[i].videoData.url != null) {
-          await cacheManager?.downloadFile(
-            reelsList[i].videoData.url!,
-          );
-          // print('>>>>> video cached ${i} ');
+          var cacheFile = (await CacheService.cacheManager!
+              .getFileFromCache(reelsList[i].videoData.url!));
+          if (cacheFile == null) {
+            cacheManager?.downloadFile(
+              reelsList[i].videoData.url!,
+            );
+            print('>>>>> video cached ${i} ');
+          } else {
+            print('>>>>> Already video cached ${i}');
+          }
         }
       }
     }
