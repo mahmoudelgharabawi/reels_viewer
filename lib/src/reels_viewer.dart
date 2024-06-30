@@ -74,11 +74,18 @@ class ReelsViewer extends StatefulWidget {
 
 class _ReelsViewerState extends State<ReelsViewer> {
   SwiperController controller = SwiperController();
-
+  bool isLoading = true;
   @override
   void initState() {
-    CacheService.cacheAllVideos(widget.reelsList);
+    init();
     super.initState();
+  }
+
+  void init() async {
+    CacheService.cacheAllVideos(widget.reelsList);
+    await Future.delayed(const Duration(seconds: 2));
+    isLoading = false;
+    setState(() {});
   }
 
   @override
@@ -91,66 +98,72 @@ class _ReelsViewerState extends State<ReelsViewer> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      body: Stack(
-        children: [
-          //We need swiper for every content
-          Swiper(
-            duration: 1000,
-            itemBuilder: (BuildContext context, int index) {
-              return ReelsPage(
-                closeOnEnd: widget.closeOnEnd
-                    ? index ==
-                        (widget.reelsList.isNotEmpty
-                            ? (widget.reelsList.length - 1)
-                            : 0)
-                    : false,
-                onWhatsAppClicked: widget.onWhatsAppClicked,
-                onProfileClicked: widget.onProfileClicked,
-                item: widget.reelsList[index],
-                onClickMoreBtn: widget.onClickMoreBtn,
-                onComment: widget.onComment,
-                onFollow: widget.onFollow,
-                onLike: widget.onLike,
-                onSaved: widget.onSaved,
-                onShare: widget.onShare,
-                showVerifiedTick: widget.showVerifiedTick,
-                swiperController: controller,
-                showProgressIndicator: widget.showProgressIndicator,
-              );
-            },
-            controller: controller,
-            itemCount: widget.reelsList.length,
-            scrollDirection: Axis.vertical,
-            onIndexChanged: widget.onIndexChanged,
-          ),
-
-          if (widget.showAppbar)
-            Container(
-              margin: EdgeInsets.only(top: 25),
-              color: Colors.transparent,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  IconButton(
-                      onPressed: widget.onClickBackArrow ??
-                          () => Navigator.pop(context),
-                      icon: const Icon(
-                        Icons.arrow_back,
-                        color: Colors.white,
-                      )),
-                  // Text(
-                  //   widget.appbarTitle ?? 'Reels View',
-                  //   style: const TextStyle(
-                  //       fontSize: 22,
-                  //       fontWeight: FontWeight.w600,
-                  //       color: Colors.white),
-                  // ),
-                  // const SizedBox(),
-                ],
+      body: isLoading
+          ? const Center(
+              child: CircularProgressIndicator(
+                color: Colors.white,
               ),
+            )
+          : Stack(
+              children: [
+                //We need swiper for every content
+                Swiper(
+                  duration: 1000,
+                  itemBuilder: (BuildContext context, int index) {
+                    return ReelsPage(
+                      closeOnEnd: widget.closeOnEnd
+                          ? index ==
+                              (widget.reelsList.isNotEmpty
+                                  ? (widget.reelsList.length - 1)
+                                  : 0)
+                          : false,
+                      onWhatsAppClicked: widget.onWhatsAppClicked,
+                      onProfileClicked: widget.onProfileClicked,
+                      item: widget.reelsList[index],
+                      onClickMoreBtn: widget.onClickMoreBtn,
+                      onComment: widget.onComment,
+                      onFollow: widget.onFollow,
+                      onLike: widget.onLike,
+                      onSaved: widget.onSaved,
+                      onShare: widget.onShare,
+                      showVerifiedTick: widget.showVerifiedTick,
+                      swiperController: controller,
+                      showProgressIndicator: widget.showProgressIndicator,
+                    );
+                  },
+                  controller: controller,
+                  itemCount: widget.reelsList.length,
+                  scrollDirection: Axis.vertical,
+                  onIndexChanged: widget.onIndexChanged,
+                ),
+
+                if (widget.showAppbar)
+                  Container(
+                    margin: EdgeInsets.only(top: 25),
+                    color: Colors.transparent,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        IconButton(
+                            onPressed: widget.onClickBackArrow ??
+                                () => Navigator.pop(context),
+                            icon: const Icon(
+                              Icons.arrow_back,
+                              color: Colors.white,
+                            )),
+                        // Text(
+                        //   widget.appbarTitle ?? 'Reels View',
+                        //   style: const TextStyle(
+                        //       fontSize: 22,
+                        //       fontWeight: FontWeight.w600,
+                        //       color: Colors.white),
+                        // ),
+                        // const SizedBox(),
+                      ],
+                    ),
+                  ),
+              ],
             ),
-        ],
-      ),
     );
   }
 }
