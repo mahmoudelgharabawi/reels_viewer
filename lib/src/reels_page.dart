@@ -3,9 +3,8 @@ import 'package:card_swiper/card_swiper.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:reels_viewer/src/models/reel_model.dart';
+import 'package:reels_viewer/src/services/cache.service.dart';
 import 'package:reels_viewer/src/utils/url_checker.dart';
 import 'package:video_player/video_player.dart';
 import 'components/like_icon.dart';
@@ -52,7 +51,6 @@ class ReelsPage extends StatefulWidget {
 class _ReelsPageState extends State<ReelsPage> {
   VideoPlayerController? _videoPlayerController;
   ChewieController? _chewieController;
-  DefaultCacheManager? _cacheManager;
   Uint8List? imageUint8list;
 
   bool _liked = false;
@@ -68,17 +66,18 @@ class _ReelsPageState extends State<ReelsPage> {
 
   Future initializePlayer() async {
     isSwiped = false;
-    _cacheManager ??= DefaultCacheManager();
     // await _cacheManager!.emptyCache();
 
-    var videoFile =
-        await _cacheManager!.getFileFromCache(widget.item.videoData.url!);
+    var videoFile = await CacheService.cacheManager!
+        .getFileFromCache(widget.item.videoData.url!);
     setState(() {});
+
+    // print('>>>> is video cached${videoFile != null}');
 
     if (videoFile == null) {
       _videoPlayerController = VideoPlayerController.networkUrl(
           Uri.parse(widget.item.videoData.url!));
-      _cacheManager!.downloadFile(widget.item.videoData.url!);
+      // _cacheManager!.downloadFile(widget.item.videoData.url!);
     } else {
       _videoPlayerController = VideoPlayerController.file(videoFile.file);
     }

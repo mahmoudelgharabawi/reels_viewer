@@ -166,6 +166,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_boxicons:
+    dependency: transitive
+    description:
+      name: flutter_boxicons
+      sha256: df173a4d030e8fbeb1b4956dac08a131d9375a2f584f2cf0fd1b3b8fb437796c
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.1.0"
   flutter_cache_manager:
     dependency: transitive
     description:
@@ -288,6 +296,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.0"
+  numeral:
+    dependency: transitive
+    description:
+      name: numeral
+      sha256: "8609d08b08a67fbbf1a28c2fe41fed288845947ace165375d71772d52f7e95c6"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.0"
   octo_image:
     dependency: transitive
     description:
@@ -406,7 +422,15 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "1.0.0+3"
+    version: "1.0.0+8"
+  rich_readmore:
+    dependency: transitive
+    description:
+      name: rich_readmore
+      sha256: "1c8a97f4a8268737f4e82beebd6137c6a0855cab72c4b3dd1133014e63536b62"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.1"
   rxdart:
     dependency: transitive
     description:
@@ -564,14 +588,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.3.0"
-  video_thumbnail:
-    dependency: transitive
-    description:
-      name: video_thumbnail
-      sha256: "3455c189d3f0bb4e3fc2236475aa84fe598b9b2d0e08f43b9761f5bc44210016"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.5.3"
   vm_service:
     dependency: transitive
     description:

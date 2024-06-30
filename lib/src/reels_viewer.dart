@@ -2,6 +2,7 @@ import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:reels_viewer/src/models/reel_model.dart';
 import 'package:reels_viewer/src/reels_page.dart';
+import 'package:reels_viewer/src/services/cache.service.dart';
 
 class ReelsViewer extends StatefulWidget {
   /// use reel model and provide list of reels, list contains reels object, object contains url and other parameters
@@ -73,6 +74,12 @@ class ReelsViewer extends StatefulWidget {
 
 class _ReelsViewerState extends State<ReelsViewer> {
   SwiperController controller = SwiperController();
+
+  @override
+  void initState() {
+    CacheService.cacheAllVideos(widget.reelsList);
+    super.initState();
+  }
 
   @override
   void dispose() {

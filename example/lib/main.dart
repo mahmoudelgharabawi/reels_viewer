@@ -87,7 +87,7 @@ class _MyHomePageState extends State<MyHomePage> {
       onShare: (url) {
         log('Shared reel url ==> $url');
       },
-      onLike: (url) {
+      onLike: (url) async {
         log('Liked reel url ==> $url');
       },
       onFollow: (model) {
