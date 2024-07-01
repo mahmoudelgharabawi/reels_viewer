@@ -26,10 +26,12 @@ abstract class CacheService {
               await cacheManager?.downloadFile(
                 reelsList[i].videoData.url!,
               );
-            } else {
+            } else if (counter < 30) {
               cacheManager?.downloadFile(
                 reelsList[i].videoData.url!,
               );
+            } else {
+              break;
             }
             counter++;
             print('>>>>> video cached ${i} ');
