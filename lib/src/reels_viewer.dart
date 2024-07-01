@@ -82,8 +82,7 @@ class _ReelsViewerState extends State<ReelsViewer> {
   }
 
   void init() async {
-    CacheService.cacheAllVideos(widget.reelsList);
-    await Future.delayed(const Duration(seconds: 2));
+    await CacheService.cacheAllVideos(widget.reelsList);
     isLoading = false;
     setState(() {});
   }

@@ -4,7 +4,8 @@ import 'package:reels_viewer/reels_viewer.dart';
 abstract class CacheService {
   static CacheManager? cacheManager;
 
-  static void cacheAllVideos(List<ReelModel> reelsList) async {
+  static Future<void> cacheAllVideos(List<ReelModel> reelsList) async {
+    int counter = 0;
     cacheManager = CacheManager(
       Config(
         'reels',
@@ -21,11 +22,19 @@ abstract class CacheService {
           var cacheFile = (await CacheService.cacheManager!
               .getFileFromCache(reelsList[i].videoData.url!));
           if (cacheFile == null) {
-            cacheManager?.downloadFile(
-              reelsList[i].videoData.url!,
-            );
+            if (counter < 2) {
+              await cacheManager?.downloadFile(
+                reelsList[i].videoData.url!,
+              );
+            } else {
+              cacheManager?.downloadFile(
+                reelsList[i].videoData.url!,
+              );
+            }
+            counter++;
             print('>>>>> video cached ${i} ');
           } else {
+            counter++;
             print('>>>>> Already video cached ${i}');
           }
         }
