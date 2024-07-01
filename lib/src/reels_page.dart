@@ -77,6 +77,7 @@ class _ReelsPageState extends State<ReelsPage> {
     if (videoFile == null) {
       _videoPlayerController = VideoPlayerController.networkUrl(
           Uri.parse(widget.item.videoData.url!));
+      CacheService.cacheVideoIfNotCached(widget.item);
       // CacheService.cacheManager!.downloadFile(widget.item.videoData.url!);
     } else {
       _videoPlayerController = VideoPlayerController.file(videoFile.file);
