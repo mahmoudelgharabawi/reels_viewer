@@ -254,7 +254,7 @@ class ScreenOptions extends StatelessWidget {
                   size: iconSize, color: Colors.white),
             ),
           const SizedBox(height: 4),
-          Text('reviews',
+          Text(item.commentCount.beautiful,
               style: const TextStyle(
                 color: Colors.white,
                 fontSize: 14,

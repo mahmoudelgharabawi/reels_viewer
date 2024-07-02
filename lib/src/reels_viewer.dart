@@ -74,7 +74,6 @@ class ReelsViewer extends StatefulWidget {
 
 class _ReelsViewerState extends State<ReelsViewer> {
   SwiperController controller = SwiperController();
-  bool isLoading = true;
   @override
   void initState() {
     init();
@@ -85,10 +84,9 @@ class _ReelsViewerState extends State<ReelsViewer> {
     var reelsList =
         List<ReelModel>.from(widget.reelsList.map((e) => e).toList());
     CacheService.cacheVideos(reelsList);
-    if (!widget.closeOnEnd) {
-      await Future.delayed(const Duration(seconds: 2));
-    }
-    isLoading = false;
+    // if (!widget.closeOnEnd) {
+    //   await Future.delayed(const Duration(seconds: 2));
+    // }
 
     setState(() {});
   }
@@ -103,80 +101,74 @@ class _ReelsViewerState extends State<ReelsViewer> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      body: isLoading
-          ? const Center(
-              child: CircularProgressIndicator(
-                color: Colors.white,
-              ),
-            )
-          : Stack(
-              children: [
-                //We need swiper for every content
-                Swiper(
-                  duration: 1000,
-                  itemBuilder: (BuildContext context, int index) {
-                    return ReelsPage(
-                      closeOnEnd: widget.closeOnEnd
-                          ? index ==
-                              (widget.reelsList.isNotEmpty
-                                  ? (widget.reelsList.length - 1)
-                                  : 0)
-                          : false,
-                      onWhatsAppClicked: widget.onWhatsAppClicked,
-                      onProfileClicked: widget.onProfileClicked,
-                      item: widget.reelsList[index],
-                      onClickMoreBtn: widget.onClickMoreBtn,
-                      onComment: widget.onComment,
-                      onFollow: widget.onFollow,
-                      onLike: widget.onLike,
-                      onSaved: widget.onSaved,
-                      onShare: widget.onShare,
-                      showVerifiedTick: widget.showVerifiedTick,
-                      swiperController: controller,
-                      showProgressIndicator: widget.showProgressIndicator,
-                    );
-                  },
-                  controller: controller,
-                  itemCount: widget.reelsList.length,
-                  scrollDirection: Axis.vertical,
-                  onIndexChanged: (index) {
-                    for (var i = 1; i < 3; i++) {
-                      if ((index + i) < widget.reelsList.length) {
-                        CacheService.cacheVideoIfNotCached(
-                            widget.reelsList[index + i]);
-                      }
-                    }
-                    widget.onIndexChanged?.call(index);
-                  },
-                ),
+      body: Stack(
+        children: [
+          //We need swiper for every content
+          Swiper(
+            duration: 1000,
+            itemBuilder: (BuildContext context, int index) {
+              return ReelsPage(
+                closeOnEnd: widget.closeOnEnd
+                    ? index ==
+                        (widget.reelsList.isNotEmpty
+                            ? (widget.reelsList.length - 1)
+                            : 0)
+                    : false,
+                onWhatsAppClicked: widget.onWhatsAppClicked,
+                onProfileClicked: widget.onProfileClicked,
+                item: widget.reelsList[index],
+                onClickMoreBtn: widget.onClickMoreBtn,
+                onComment: widget.onComment,
+                onFollow: widget.onFollow,
+                onLike: widget.onLike,
+                onSaved: widget.onSaved,
+                onShare: widget.onShare,
+                showVerifiedTick: widget.showVerifiedTick,
+                swiperController: controller,
+                showProgressIndicator: widget.showProgressIndicator,
+              );
+            },
+            controller: controller,
+            itemCount: widget.reelsList.length,
+            scrollDirection: Axis.vertical,
+            onIndexChanged: (index) {
+              for (var i = 1; i < 3; i++) {
+                if ((index + i) < widget.reelsList.length) {
+                  CacheService.cacheVideoIfNotCached(
+                      widget.reelsList[index + i]);
+                }
+              }
+              widget.onIndexChanged?.call(index);
+            },
+          ),
 
-                if (widget.showAppbar)
-                  Container(
-                    margin: EdgeInsets.only(top: 25),
-                    color: Colors.transparent,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        IconButton(
-                            onPressed: widget.onClickBackArrow ??
-                                () => Navigator.pop(context),
-                            icon: const Icon(
-                              Icons.arrow_back,
-                              color: Colors.white,
-                            )),
-                        // Text(
-                        //   widget.appbarTitle ?? 'Reels View',
-                        //   style: const TextStyle(
-                        //       fontSize: 22,
-                        //       fontWeight: FontWeight.w600,
-                        //       color: Colors.white),
-                        // ),
-                        // const SizedBox(),
-                      ],
-                    ),
-                  ),
-              ],
+          if (widget.showAppbar)
+            Container(
+              margin: EdgeInsets.only(top: 25),
+              color: Colors.transparent,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  IconButton(
+                      onPressed: widget.onClickBackArrow ??
+                          () => Navigator.pop(context),
+                      icon: const Icon(
+                        Icons.arrow_back,
+                        color: Colors.white,
+                      )),
+                  // Text(
+                  //   widget.appbarTitle ?? 'Reels View',
+                  //   style: const TextStyle(
+                  //       fontSize: 22,
+                  //       fontWeight: FontWeight.w600,
+                  //       color: Colors.white),
+                  // ),
+                  // const SizedBox(),
+                ],
+              ),
             ),
+        ],
+      ),
     );
   }
 }
