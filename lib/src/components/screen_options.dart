@@ -195,6 +195,12 @@ class ScreenOptions extends StatelessWidget {
               ),
               onTap: () => onShare!(item),
             ),
+          if (onShare != null)
+            const Text('Share',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 14,
+                )),
           if (onShare != null) const SizedBox(height: 16),
         ],
       );

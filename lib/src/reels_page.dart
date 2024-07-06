@@ -77,8 +77,8 @@ class _ReelsPageState extends State<ReelsPage> {
     if (videoFile == null) {
       _videoPlayerController = VideoPlayerController.networkUrl(
           Uri.parse(widget.item.videoData.url!));
-      CacheService.cacheVideoIfNotCached(widget.item);
-      // CacheService.cacheManager!.downloadFile(widget.item.videoData.url!);
+
+      CacheService.cacheManager!.downloadFile(widget.item.videoData.url!);
     } else {
       _videoPlayerController = VideoPlayerController.file(videoFile.file);
     }
@@ -142,15 +142,21 @@ class _ReelsPageState extends State<ReelsPage> {
                 height: widget.item.videoData.height?.toDouble(),
                 width: widget.item.videoData.width?.toDouble(),
                 child: GestureDetector(
-                  onDoubleTap: () {
-                    if (!widget.item.isLiked) {
-                      _liked = true;
-                      if (widget.onLike != null) {
-                        widget.onLike!(widget.item);
-                      }
-                      setState(() {});
+                  onTap: () {
+                    if (_chewieController != null) {
+                      _chewieController!.play();
                     }
                   },
+                  // onDoubleTap: () {
+
+                  //   if (!widget.item.isLiked) {
+                  //     _liked = true;
+                  //     if (widget.onLike != null) {
+                  //       widget.onLike!(widget.item);
+                  //     }
+                  //     setState(() {});
+                  //   }
+                  // },
                   child: Transform.scale(
                     scale: 1.1,
                     child: Chewie(
@@ -267,7 +273,17 @@ class _ReelsPageState extends State<ReelsPage> {
                 _chewieController!.play();
               }
             },
-            onShare: widget.onShare,
+            onShare: (model) async {
+              if (_chewieController != null) {
+                _chewieController!.pause();
+              }
+              if (widget.onShare != null) {
+                await widget.onShare!(widget.item);
+              }
+              if (_chewieController != null) {
+                _chewieController!.play();
+              }
+            },
             showVerifiedTick: widget.showVerifiedTick,
             item: widget.item,
           ),

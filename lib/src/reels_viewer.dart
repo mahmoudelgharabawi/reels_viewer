@@ -83,7 +83,7 @@ class _ReelsViewerState extends State<ReelsViewer> {
   void init() async {
     var reelsList =
         List<ReelModel>.from(widget.reelsList.map((e) => e).toList());
-    CacheService.cacheVideos(reelsList);
+    CacheService.init();
     // if (!widget.closeOnEnd) {
     //   await Future.delayed(const Duration(seconds: 2));
     // }
@@ -132,12 +132,12 @@ class _ReelsViewerState extends State<ReelsViewer> {
             itemCount: widget.reelsList.length,
             scrollDirection: Axis.vertical,
             onIndexChanged: (index) {
-              for (var i = 1; i < 3; i++) {
-                if ((index + i) < widget.reelsList.length) {
-                  CacheService.cacheVideoIfNotCached(
-                      widget.reelsList[index + i]);
-                }
-              }
+              // for (var i = 1; i < 3; i++) {
+              //   if ((index + i) < widget.reelsList.length) {
+              //     CacheService.cacheVideoIfNotCached(
+              //         widget.reelsList[index + i]);
+              //   }
+              // }
               widget.onIndexChanged?.call(index);
             },
           ),

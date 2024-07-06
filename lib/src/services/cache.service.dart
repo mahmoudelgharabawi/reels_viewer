@@ -19,8 +19,7 @@ abstract class CacheService {
     }
   }
 
-  static Future<void> cacheVideos(List<ReelModel> reelsList) async {
-    int counter = 0;
+  static void init() {
     cacheManager = CacheManager(
       Config(
         'reels',
@@ -30,6 +29,11 @@ abstract class CacheService {
         fileService: HttpFileService(),
       ),
     );
+  }
+
+  static Future<void> cacheVideos(List<ReelModel> reelsList) async {
+    int counter = 0;
+
     if (reelsList.isNotEmpty) {
       // already will be cached through playing video
       reelsList.removeAt(0);
