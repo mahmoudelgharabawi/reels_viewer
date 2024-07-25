@@ -55,6 +55,8 @@ class _ReelsPageState extends State<ReelsPage> {
 
   bool _liked = false;
   bool isSwiped = false;
+  bool showPlayBtn = false;
+  int volume = 1;
   @override
   void initState() {
     super.initState();
@@ -144,7 +146,13 @@ class _ReelsPageState extends State<ReelsPage> {
                 child: GestureDetector(
                   onTap: () {
                     if (_chewieController != null) {
-                      _chewieController!.play();
+                      if (_chewieController!.isPlaying) {
+                        _chewieController!.pause();
+                        showPlayBtn = true;
+                      } else {
+                        _chewieController!.play();
+                      }
+                      setState(() {});
                     }
                   },
                   // onDoubleTap: () {
@@ -205,6 +213,43 @@ class _ReelsPageState extends State<ReelsPage> {
           const Center(
             child: LikeIcon(),
           ),
+        // if (_chewieController != null &&
+        //     _chewieController!.videoPlayerController.value.isInitialized &&
+        //     (!(_chewieController?.isPlaying ?? false)))
+        if (showPlayBtn &&
+            _chewieController != null &&
+            (!(_chewieController?.isPlaying ?? false)))
+          Center(
+            child: IconButton(
+                onPressed: () {
+                  _chewieController!.play();
+                  setState(() {});
+                },
+                icon: const Icon(
+                  Icons.play_arrow_rounded,
+                  color: Colors.white,
+                  size: 65,
+                )),
+          ),
+
+        Positioned(
+          bottom: 2,
+          right: 0,
+          child: IconButton(
+            onPressed: () async {
+              if (_chewieController != null) {
+                volume = (volume == 1 ? 0 : 1);
+                await _chewieController!.setVolume(volume.toDouble());
+                setState(() {});
+              }
+            },
+            icon: Icon(
+              volume == 1 ? Icons.volume_up_outlined : Icons.volume_off_rounded,
+              size: 15,
+              color: Colors.white,
+            ),
+          ),
+        ),
         if (widget.showProgressIndicator && _videoPlayerController != null)
           Positioned(
             bottom: 0,
