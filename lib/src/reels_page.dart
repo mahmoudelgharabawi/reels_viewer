@@ -234,7 +234,8 @@ class _ReelsPageState extends State<ReelsPage> {
 
         Positioned(
           bottom: 2,
-          right: 0,
+          right: Directionality.of(context) == TextDirection.ltr ? 0 : null,
+          left: Directionality.of(context) == TextDirection.rtl ? 0 : null,
           child: IconButton(
             onPressed: () async {
               if (_chewieController != null) {
