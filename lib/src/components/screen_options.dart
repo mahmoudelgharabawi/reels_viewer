@@ -119,7 +119,7 @@ class ScreenOptions extends StatelessWidget {
                 commentBtn,
                 // whatsAppBtn,
                 savedBtn,
-                shareBtn,
+                shareBtn(context),
                 moreBtn
               ],
             ),
@@ -184,7 +184,7 @@ class ScreenOptions extends StatelessWidget {
         ],
       );
 
-  Widget get shareBtn => Column(
+  Widget shareBtn(BuildContext context) => Column(
         children: [
           if (onShare != null)
             InkWell(
@@ -196,8 +196,11 @@ class ScreenOptions extends StatelessWidget {
               onTap: () => onShare!(item),
             ),
           if (onShare != null)
-            const Text('Share',
-                style: TextStyle(
+            Text(
+                Directionality.of(context) == TextDirection.ltr
+                    ? 'Share'
+                    : 'مشاركة',
+                style: const TextStyle(
                   color: Colors.white,
                   fontSize: 14,
                 )),
