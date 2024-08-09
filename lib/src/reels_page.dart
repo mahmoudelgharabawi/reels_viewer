@@ -95,6 +95,7 @@ class _ReelsPageState extends State<ReelsPage> {
       );
 
       setState(() {});
+
       _videoPlayerController!.addListener(() {
         // print('>>>position:${_videoPlayerController?.value.position}');
         // print('>>>isPlaying:${_videoPlayerController?.value.isPlaying}');
