@@ -184,50 +184,56 @@ class ScreenOptions extends StatelessWidget {
         ],
       );
 
-  Widget shareBtn(BuildContext context) => Column(
-        children: [
-          if (onShare != null)
-            InkWell(
-              child: Icon(
-                CupertinoIcons.reply,
-                color: Colors.white,
-                size: iconSize,
-              ),
-              onTap: () => onShare!(item),
-            ),
-          if (onShare != null)
-            Text(
-                Directionality.of(context) == TextDirection.ltr
-                    ? 'Share'
-                    : 'مشاركة',
-                style: const TextStyle(
+  Widget shareBtn(BuildContext context) => InkWell(
+        onTap: onShare != null ? () => onShare!(item) : null,
+        child: Column(
+          children: [
+            if (onShare != null)
+              InkWell(
+                child: Icon(
+                  CupertinoIcons.reply,
                   color: Colors.white,
-                  fontSize: 14,
-                )),
-          if (onShare != null) const SizedBox(height: 16),
-        ],
+                  size: iconSize,
+                ),
+                onTap: () => onShare!(item),
+              ),
+            if (onShare != null)
+              Text(
+                  Directionality.of(context) == TextDirection.ltr
+                      ? 'Share'
+                      : 'مشاركة',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 14,
+                  )),
+            if (onShare != null) const SizedBox(height: 16),
+          ],
+        ),
       );
 
-  Widget get savedBtn => Column(
-        children: [
-          if (onSaved != null)
-            InkWell(
-              child: Icon(
-                item.isSaved ? Icons.bookmark : Icons.bookmark_border,
-                size: iconSize,
-                color: Colors.white,
-              ),
-              onTap: () => onSaved!(item),
-            ),
-          if (onSaved != null) const SizedBox(height: 4),
-          if (onSaved != null)
-            Text(item.saveCount.beautiful,
-                style: const TextStyle(
+  Widget get savedBtn => InkWell(
+        onTap: onSaved != null ? () => onSaved!(item) : null,
+        child: Column(
+          children: [
+            if (onSaved != null)
+              InkWell(
+                child: Icon(
+                  item.isSaved ? Icons.bookmark : Icons.bookmark_border,
+                  size: iconSize,
                   color: Colors.white,
-                  fontSize: 14,
-                )),
-          if (onSaved != null) const SizedBox(height: 16),
-        ],
+                ),
+                onTap: () => onSaved!(item),
+              ),
+            if (onSaved != null) const SizedBox(height: 4),
+            if (onSaved != null)
+              Text(item.saveCount.beautiful,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 14,
+                  )),
+            if (onSaved != null) const SizedBox(height: 16),
+          ],
+        ),
       );
 
   Widget get whatsAppBtn => Column(
@@ -245,66 +251,72 @@ class ScreenOptions extends StatelessWidget {
         ],
       );
 
-  Widget get commentBtn => Column(
-        children: [
-          if (onComment != null)
-            InkWell(
-              onTap: () {
-                onComment!(item);
+  Widget get commentBtn => InkWell(
+        onTap: onComment != null ? () => onComment!(item) : null,
+        child: Column(
+          children: [
+            if (onComment != null)
+              InkWell(
+                onTap: () {
+                  onComment!(item);
 
-                // showModalBottomSheet(
-                //     barrierColor: Colors.transparent,
-                //     context: context,
-                //     builder: (ctx) => CommentBottomSheet(
-                //         commentList: item.commentList ?? [],
-                //         onComment: onComment));
-              },
-              child: Icon(Boxicons.bx_message_square_dots,
-                  size: iconSize, color: Colors.white),
-            ),
-          const SizedBox(height: 4),
-          Text(item.commentCount.beautiful,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 14,
-              )),
-          // if (onComment != null)
-          //   Text(
-          //       NumbersToShort.convertNumToShort(
-          //           item.commentList?.length ?? 0),
-          //       style: const TextStyle(color: Colors.white)),
-          if (onComment != null) const SizedBox(height: 16),
-        ],
+                  // showModalBottomSheet(
+                  //     barrierColor: Colors.transparent,
+                  //     context: context,
+                  //     builder: (ctx) => CommentBottomSheet(
+                  //         commentList: item.commentList ?? [],
+                  //         onComment: onComment));
+                },
+                child: Icon(Boxicons.bx_message_square_dots,
+                    size: iconSize, color: Colors.white),
+              ),
+            const SizedBox(height: 4),
+            Text(item.commentCount.beautiful,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 14,
+                )),
+            // if (onComment != null)
+            //   Text(
+            //       NumbersToShort.convertNumToShort(
+            //           item.commentList?.length ?? 0),
+            //       style: const TextStyle(color: Colors.white)),
+            if (onComment != null) const SizedBox(height: 16),
+          ],
+        ),
       );
 
-  Widget get likeBtn => Column(
-        children: [
-          if (onLike != null && !item.isLiked)
-            InkWell(
-              onTap: () => onLike!(item),
-              child: Icon(
-                Boxicons.bx_like,
-                color: Colors.white,
-                size: iconSize,
+  Widget get likeBtn => InkWell(
+        onTap: onLike != null ? () => onLike!(item) : null,
+        child: Column(
+          children: [
+            if (onLike != null && !item.isLiked)
+              InkWell(
+                onTap: () => onLike!(item),
+                child: Icon(
+                  Boxicons.bx_like,
+                  color: Colors.white,
+                  size: iconSize,
+                ),
               ),
-            ),
-          if (item.isLiked)
-            InkWell(
-              onTap: () => onLike!(item),
-              child: Icon(
-                Boxicons.bxs_like,
-                color: Colors.white,
-                size: iconSize,
+            if (item.isLiked)
+              InkWell(
+                onTap: () => onLike!(item),
+                child: Icon(
+                  Boxicons.bxs_like,
+                  color: Colors.white,
+                  size: iconSize,
+                ),
               ),
-            ),
-          const SizedBox(height: 4),
-          Text(item.likeCount.beautiful,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 14,
-              )),
-          const SizedBox(height: 16),
-        ],
+            const SizedBox(height: 4),
+            Text(item.likeCount.beautiful,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 14,
+                )),
+            const SizedBox(height: 16),
+          ],
+        ),
       );
 }
   // if (onFollow != null)
