@@ -58,6 +58,9 @@ class ReelsViewer extends StatefulWidget {
   final Function()? onClickBackArrow;
   final Function(ReelModel)? onWhatsAppClicked;
   final bool closeOnEnd;
+
+  /// limit For Pagination
+  final int limit;
   const ReelsViewer({
     Key? key,
     required this.reelsList,
@@ -74,6 +77,7 @@ class ReelsViewer extends StatefulWidget {
     this.onSaved,
     this.appbarTitle,
     this.showAppbar = true,
+    this.limit = 10,
     this.onClickBackArrow,
     this.onIndexChanged,
     this.closeOnEnd = false,
@@ -95,21 +99,26 @@ class _ReelsViewerState extends State<ReelsViewer> {
 
   void init() async {
     CacheService.init();
-    if (!(widget.closeOnEnd || widget.loop)) {
-      var index =
-          widget.reelsList.indexWhere((element) => element.userName == 'load');
-      if (index != -1) {
-        widget.reelsList.removeAt(index);
+    var index =
+        widget.reelsList.indexWhere((element) => element.userName == 'load');
+    if (index != -1) {
+      widget.reelsList.removeAt(index);
+    }
+    if ((!(widget.closeOnEnd || widget.loop)) &&
+        widget.onLoadMoreWidget != null) {
+      if (((widget.reelsList.length) % (widget.limit)) == 0) {
+        widget.reelsList.add(ReelModel(VideoData(), 'load'));
       }
-      widget.reelsList.add(ReelModel(VideoData(), 'load'));
       controller.index = index;
-      controller.addListener(() {
-        if (controller.index == widget.reelsList.length - 1) {
-          setState(() {
-            controller.index = 0;
-          });
-        }
-      });
+      if (!controller.hasListeners) {
+        // controller.addListener(() {
+        //   if (controller.index == widget.reelsList.length - 1) {
+        //     setState(() {
+        //       controller.index = 0;
+        //     });
+        //   }
+        // });
+      }
     }
     setState(() {});
   }
