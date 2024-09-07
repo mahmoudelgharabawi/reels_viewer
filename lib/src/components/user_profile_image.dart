@@ -24,15 +24,39 @@ class UserProfileImage extends StatelessWidget {
           ),
         ),
       ),
-      placeholder: (context, url) => const SizedBox(
-        height: 20,
-        width: 20,
-        child: CircularProgressIndicator(),
+      placeholder: (context, url) => Container(
+        height: 56,
+        width: 56,
+        padding: EdgeInsets.zero,
+        decoration: BoxDecoration(
+          color: Colors.grey,
+          border: Border.all(color: Colors.black),
+          borderRadius: BorderRadius.circular(50),
+        ),
+        child: const Center(
+          child: SizedBox(
+            height: 20,
+            width: 20,
+            child: CircularProgressIndicator(),
+          ),
+        ),
       ),
-      errorWidget: (context, url, error) => const SizedBox(
-        height: 20,
-        width: 20,
-        child: Icon(Icons.error),
+      errorWidget: (context, url, error) => Container(
+        height: 56,
+        width: 56,
+        padding: EdgeInsets.zero,
+        decoration: BoxDecoration(
+          color: Colors.grey,
+          border: Border.all(color: Colors.black),
+          borderRadius: BorderRadius.circular(50),
+        ),
+        child: const Center(
+          child: SizedBox(
+            height: 20,
+            width: 20,
+            child: Icon(Icons.error),
+          ),
+        ),
       ),
     );
   }

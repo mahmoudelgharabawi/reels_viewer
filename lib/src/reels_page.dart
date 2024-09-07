@@ -21,7 +21,7 @@ class ReelsPage extends StatefulWidget {
 
   final Function(ReelModel)? onProfileClicked;
 
-  final Function()? onClickMoreBtn;
+  final Future<void> Function(ReelModel)? onClickMoreBtn;
   final Function(ReelModel)? onFollow;
   final SwiperController swiperController;
   final bool showProgressIndicator;
@@ -233,25 +233,25 @@ class _ReelsPageState extends State<ReelsPage> {
                 )),
           ),
 
-        Positioned(
-          bottom: 2,
-          right: Directionality.of(context) == TextDirection.ltr ? 0 : null,
-          left: Directionality.of(context) == TextDirection.rtl ? 0 : null,
-          child: IconButton(
-            onPressed: () async {
-              if (_chewieController != null) {
-                volume = (volume == 1 ? 0 : 1);
-                await _chewieController!.setVolume(volume.toDouble());
-                setState(() {});
-              }
-            },
-            icon: Icon(
-              volume == 1 ? Icons.volume_up_outlined : Icons.volume_off_rounded,
-              size: 15,
-              color: Colors.white,
-            ),
-          ),
-        ),
+        // Positioned(
+        //   bottom: 2,
+        //   right: Directionality.of(context) == TextDirection.ltr ? 0 : null,
+        //   left: Directionality.of(context) == TextDirection.rtl ? 0 : null,
+        //   child: IconButton(
+        //     onPressed: () async {
+        //       if (_chewieController != null) {
+        //         volume = (volume == 1 ? 0 : 1);
+        //         await _chewieController!.setVolume(volume.toDouble());
+        //         setState(() {});
+        //       }
+        //     },
+        //     icon: Icon(
+        //       volume == 1 ? Icons.volume_up_outlined : Icons.volume_off_rounded,
+        //       size: 15,
+        //       color: Colors.white,
+        //     ),
+        //   ),
+        // ),
         if (widget.showProgressIndicator && _videoPlayerController != null)
           Positioned(
             bottom: 0,
@@ -296,7 +296,17 @@ class _ReelsPageState extends State<ReelsPage> {
               }
             },
             onWhatsAppClicked: widget.onWhatsAppClicked,
-            onClickMoreBtn: widget.onClickMoreBtn,
+            onClickMoreBtn: (model) async {
+              if (_chewieController != null) {
+                _chewieController!.pause();
+              }
+              if (widget.onComment != null) {
+                await widget.onClickMoreBtn!(widget.item);
+              }
+              if (_chewieController != null) {
+                _chewieController!.play();
+              }
+            },
             onComment: (model) async {
               if (_chewieController != null) {
                 _chewieController!.pause();

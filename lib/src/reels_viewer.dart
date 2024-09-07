@@ -28,7 +28,7 @@ class ReelsViewer extends StatefulWidget {
   final Function(int)? onIndexChanged;
 
   /// function invoke when user click on more options btn
-  final Function()? onClickMoreBtn;
+  final Future<void> Function(ReelModel)? onClickMoreBtn;
 
   /// function invoke to show loading indicator
   final Widget Function()? onLoadMoreWidget;

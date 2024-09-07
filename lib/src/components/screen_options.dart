@@ -17,7 +17,7 @@ class ScreenOptions extends StatelessWidget {
   final Function(ReelModel)? onComment;
   final Function(ReelModel)? onWhatsAppClicked;
 
-  final Function()? onClickMoreBtn;
+  final Function(ReelModel)? onClickMoreBtn;
   final Function(ReelModel)? onFollow;
 
   const ScreenOptions({
@@ -179,7 +179,15 @@ class ScreenOptions extends StatelessWidget {
                 Icons.more_vert,
                 color: Colors.white,
               ),
-              onTap: onClickMoreBtn!,
+              onTap: () {
+                onClickMoreBtn!(item);
+                // showModalBottomSheet(
+                //     barrierColor: Colors.transparent,
+                //     context: context,
+                //     builder: (ctx) => CommentBottomSheet(
+                //         commentList: item.commentList ?? [],
+                //         onComment: onComment));
+              },
             ),
         ],
       );

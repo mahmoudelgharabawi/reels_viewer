@@ -96,7 +96,7 @@ class _MyHomePageState extends State<MyHomePage> {
       onComment: (comment) async {
         log('Comment on reel ==> $comment');
       },
-      onClickMoreBtn: () {
+      onClickMoreBtn: (model) async {
         log('======> Clicked on more option <======');
       },
       onClickBackArrow: () {
