@@ -1,3 +1,4 @@
+import 'package:animated_digit/animated_digit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -53,6 +54,32 @@ class ScreenOptions extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // this Container to show views
+                Container(
+                  width: 50,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.black38),
+                  child: Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(
+                          Icons.visibility,
+                          color: Colors.white,
+                        ),
+                        const SizedBox(width: 4),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 3),
+                          child: AnimatedDigitWidget(
+                            value: item.seenCount,
+                            textStyle: mainSpanTextStyle,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
                 InkWell(
                   onTap: () => onProfileClicked?.call(item),
                   child: Row(

@@ -8,6 +8,7 @@ class ReelModel {
   bool isSaved;
   bool isFollowing;
   int likeCount;
+  int seenCount;
   int saveCount;
   int commentCount;
   String followingText;
@@ -27,6 +28,7 @@ class ReelModel {
       this.isSaved = false,
       this.isFollowing = false,
       this.likeCount = 0,
+      this.seenCount = 0,
       this.saveCount = 0,
       this.commentCount = 0,
       this.followingText = 'Following',

@@ -57,6 +57,7 @@ class ReelsViewer extends StatefulWidget {
   /// function invoke when user click on back btn
   final Function()? onClickBackArrow;
   final Function(ReelModel)? onWhatsAppClicked;
+  final void Function(ReelModel)? onInitTrigger;
   final bool closeOnEnd;
 
   /// limit For Pagination
@@ -80,6 +81,7 @@ class ReelsViewer extends StatefulWidget {
     this.limit = 10,
     this.onClickBackArrow,
     this.onIndexChanged,
+    this.onInitTrigger,
     this.closeOnEnd = false,
     this.loop = true,
     this.showProgressIndicator = true,
@@ -162,6 +164,7 @@ class _ReelsViewerState extends State<ReelsViewer> {
                 onLike: widget.onLike,
                 onSaved: widget.onSaved,
                 onShare: widget.onShare,
+                onInitTrigger: widget.onInitTrigger,
                 showVerifiedTick: widget.showVerifiedTick,
                 swiperController: controller,
                 showProgressIndicator: widget.showProgressIndicator,

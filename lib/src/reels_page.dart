@@ -26,6 +26,7 @@ class ReelsPage extends StatefulWidget {
   final SwiperController swiperController;
   final bool showProgressIndicator;
   final bool closeOnEnd;
+  final void Function(ReelModel)? onInitTrigger;
 
   const ReelsPage({
     Key? key,
@@ -38,6 +39,7 @@ class ReelsPage extends StatefulWidget {
     this.onFollow,
     this.onLike,
     this.onShare,
+    this.onInitTrigger,
     this.onSaved,
     this.showProgressIndicator = true,
     this.closeOnEnd = false,
@@ -59,6 +61,7 @@ class _ReelsPageState extends State<ReelsPage> {
   int volume = 1;
   @override
   void initState() {
+    widget.onInitTrigger?.call(widget.item);
     super.initState();
     if (!UrlChecker.isImageUrl(widget.item.videoData.url!) &&
         UrlChecker.isValid(widget.item.videoData.url!)) {
